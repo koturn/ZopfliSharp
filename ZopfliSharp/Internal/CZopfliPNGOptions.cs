@@ -29,6 +29,10 @@ namespace ZopfliSharp.Internal
         /// </summary>
         public const bool DefaultAutoFilterStrategy = true;
         /// <summary>
+        /// Default value for <see cref="KeepColorType"/>.
+        /// </summary>
+        public const bool DefaultKeepColorType = false;
+        /// <summary>
         /// Default value for <see cref="UseZopfli"/>.
         /// </summary>
         public const bool DefaultUseZopfli = true;
@@ -62,6 +66,10 @@ namespace ZopfliSharp.Internal
         /// Automatically choose filter strategy using less good compression.
         /// </summary>
         public bool AutoFilterStrategy { get; set; }
+        /// <summary>
+        /// Keep original color type (RGB, RGBA, gray, gray+alpha or palette) and bit depth of the PNG.
+        /// </summary>
+        public bool KeepColorType { get; set; }
         /// <summary>
         /// <para>PNG chunks to keep</para>
         /// <para>chunks to literally copy over from the original PNG to the resulting one.</para>
@@ -97,6 +105,7 @@ namespace ZopfliSharp.Internal
         /// <param name="lossyTransparent">Allow altering hidden colors of fully transparent pixels.</param>
         /// <param name="lossy8bit">Convert 16-bit per channel images to 8-bit per channel.</param>
         /// <param name="autoFilterStrategy">Automatically choose filter strategy using less good compression.</param>
+        /// <param name="keepColorType">Keep original color type (RGB, RGBA, gray, gray+alpha or palette) and bit depth of the PNG.</param>
         /// <param name="useZopfli">Use Zopfli deflate compression.</param>
         /// <param name="numIterations">Zopfli number of iterations.</param>
         /// <param name="numIterationsLarge">Zopfli number of iterations on large images.</param>
@@ -104,6 +113,7 @@ namespace ZopfliSharp.Internal
             bool lossyTransparent = DefaultLossyTransparent,
             bool lossy8bit = DefaultLossy8bit,
             bool autoFilterStrategy = DefaultAutoFilterStrategy,
+            bool keepColorType = DefaultKeepColorType,
             bool useZopfli = DefaultUseZopfli,
             int numIterations = DefaultNumIterations,
             int numIterationsLarge = DefaultNumIterationsLarge)
@@ -113,6 +123,7 @@ namespace ZopfliSharp.Internal
             FilterStrategiesPointer = IntPtr.Zero;
             NumFilterStrategies = 0;
             AutoFilterStrategy = autoFilterStrategy;
+            KeepColorType = keepColorType;
             KeepChunksPointer = IntPtr.Zero;
             NumKeepChunks = 0;
             UseZopfli = useZopfli;
@@ -131,6 +142,7 @@ namespace ZopfliSharp.Internal
                 pngOptions.LossyTransparent,
                 pngOptions.Lossy8bit,
                 pngOptions.AutoFilterStrategy,
+                pngOptions.KeepColorType,
                 pngOptions.UseZopfli,
                 pngOptions.NumIterations,
                 pngOptions.NumIterationsLarge)
