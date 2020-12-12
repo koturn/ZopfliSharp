@@ -5,7 +5,7 @@
     <Authors>koturn</Authors>
     <Company>koturn</Company>
     <Description>A P/Invoke library for google/zopfli (zopfli.dll and zopflipng.dll).</Description>
-    <Copyright>koturn</Copyright>
+    <Copyright>Copyright (C) 2020 koturn All Rights Reserverd.</Copyright>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/koturn/ZipfliSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/koturn/ZipfliSharp</RepositoryUrl>
