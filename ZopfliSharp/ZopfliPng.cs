@@ -69,7 +69,10 @@ namespace ZopfliSharp
         /// <returns>Result PNG binary.</returns>
         public static byte[] OptimizePng(byte[] pngData, long pngDataLength, bool verbose = false)
         {
-            return OptimizePng(pngData, pngDataLength, ZopfliPNGOptions.GetDefault(), verbose);
+            using (var cPngOptions = CZopfliPNGOptions.GetDefault())
+            {
+                return OptimizePng(pngData, pngDataLength, cPngOptions, verbose);
+            }
         }
 
 
@@ -98,29 +101,43 @@ namespace ZopfliSharp
         {
             using (var cPngOptions = new CZopfliPNGOptions(pngOptions))
             {
-                var error = UnsafeNativeMethods.CZopfliPNGOptimize(
-                    pngData,
-                    (UIntPtr)pngDataLength,
-                    in cPngOptions,
-                    verbose,
-                    out var pResultPngHandle,
-                    out var resultPngSize);
+                return OptimizePng(pngData, pngDataLength, cPngOptions, verbose);
+            }
+        }
 
-                if (pResultPngHandle.IsInvalid)
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="pngDataLength">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="cPngOptions">Options for ZopfliPNG.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns>Result PNG binary.</returns>
+        internal static byte[] OptimizePng(byte[] pngData, long pngDataLength, in CZopfliPNGOptions cPngOptions, bool verbose = false)
+        {
+            var error = UnsafeNativeMethods.CZopfliPNGOptimize(
+                pngData,
+                (UIntPtr)pngDataLength,
+                cPngOptions,
+                verbose,
+                out var pResultPngHandle,
+                out var resultPngSize);
+
+            if (pResultPngHandle.IsInvalid)
+            {
+                return null;
+            }
+
+            using (pResultPngHandle)
+            {
+                if (error != 0)
                 {
                     return null;
                 }
-
-                using (pResultPngHandle)
-                {
-                    if (error != 0)
-                    {
-                        return null;
-                    }
-                    var resultPng = new byte[(ulong)resultPngSize];
-                    Marshal.Copy(pResultPngHandle.DangerousGetHandle(), resultPng, 0, resultPng.Length);
-                    return resultPng;
-                }
+                var resultPng = new byte[(ulong)resultPngSize];
+                Marshal.Copy(pResultPngHandle.DangerousGetHandle(), resultPng, 0, resultPng.Length);
+                return resultPng;
             }
         }
     }
