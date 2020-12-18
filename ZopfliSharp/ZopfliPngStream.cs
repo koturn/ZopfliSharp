@@ -28,15 +28,15 @@ namespace ZopfliSharp
         /// <para>Gets the length in bytes of the stream.</para>
         /// <para>This property is not supported, always throws <see cref="NotSupportedException"/>.</para>
         /// </summary>
-        public override long Length => throw new NotSupportedException("Length is not supported");
+        public override long Length => throw new NotSupportedException($"{nameof(Length)} is not supported");
         /// <summary>
         /// <para>gets or sets the position within the current stream.</para>
         /// <para>This property is not supported, always throws <see cref="NotSupportedException"/>.</para>
         /// </summary>
         public override long Position
         {
-            get => throw new NotSupportedException("Position is not supported");
-            set => throw new NotSupportedException("Position is not supported");
+            get => throw new NotSupportedException($"{nameof(Position)} is not supported");
+            set => throw new NotSupportedException($"{nameof(Position)} is not supported");
         }
 
         /// <summary>
@@ -133,7 +133,7 @@ namespace ZopfliSharp
         /// if the end of the stream has been reached.</returns>
         public override int Read(byte[] buffer, int offset, int count)
         {
-            throw new NotSupportedException("Read is not supported");
+            throw new NotSupportedException($"{nameof(Read)} is not supported");
         }
 
         /// <summary>
@@ -145,7 +145,7 @@ namespace ZopfliSharp
         /// <exception cref="NotSupportedException">Always thrown.</exception>
         public override long Seek(long offset, SeekOrigin origin)
         {
-            throw new NotSupportedException("Seek is not supported");
+            throw new NotSupportedException($"{nameof(Seek)} is not supported");
         }
 
         /// <summary>
@@ -155,7 +155,7 @@ namespace ZopfliSharp
         /// <exception cref="NotSupportedException">Always thrown.</exception>
         public override void SetLength(long value)
         {
-            throw new NotSupportedException("SetLength is not supported");
+            throw new NotSupportedException($"{nameof(SetLength)} is not supported");
         }
 
         /// <summary>
