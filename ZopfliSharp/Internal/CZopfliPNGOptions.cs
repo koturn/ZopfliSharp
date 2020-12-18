@@ -12,7 +12,7 @@ namespace ZopfliSharp.Internal
     /// <para>This structure is used to interact with zopflipng.dll.</para>
     /// </summary>
     /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPNGSetDefaults(out CZopfliPNGOptions)"/>
-    /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPNGOptimize(byte[], UIntPtr, in CZopfliPNGOptions, bool, out MallocedMemoryHandle, out UIntPtr)"/>
+    /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPNGOptimize(IntPtr, UIntPtr, in CZopfliPNGOptions, bool, out MallocedMemoryHandle, out UIntPtr)"/>
     [StructLayout(LayoutKind.Sequential)]
     internal struct CZopfliPNGOptions : IDisposable
     {

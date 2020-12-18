@@ -53,8 +53,8 @@ namespace ZopfliSharp
         /// </summary>
         /// <seealso cref="Zopfli.Compress(byte[], in ZopfliOptions)"/>
         /// <seealso cref="Zopfli.Compress(byte[], in ZopfliOptions, ZopfliFormat)"/>
-        /// <seealso cref="Zopfli.Compress(byte[], long, in ZopfliOptions)"/>
-        /// <seealso cref="Zopfli.Compress(byte[], long, in ZopfliOptions, ZopfliFormat)"/>
+        /// <seealso cref="Zopfli.Compress(byte[], int, int, in ZopfliOptions)"/>
+        /// <seealso cref="Zopfli.Compress(byte[], int, int, in ZopfliOptions, ZopfliFormat)"/>
         public ZopfliOptions Options { get; set; }
         /// <summary>
         /// Output binary format.
@@ -133,7 +133,7 @@ namespace ZopfliSharp
             _canWrite = false;
 
             // Take a long time
-            var compressedData = Zopfli.Compress(_buffer, _position, Options, Format);
+            var compressedData = Zopfli.Compress(_buffer, 0, _position, Options, Format);
 
             BaseStream.Write(compressedData, 0, compressedData.Length);
         }

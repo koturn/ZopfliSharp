@@ -39,7 +39,7 @@ namespace ZopfliSharp
             [DllImport("zopflipng.dll", ExactSpelling = true)]
             [SuppressUnmanagedCodeSecurity]
             public static extern unsafe int CZopfliPNGOptimize(
-                [In] byte[] origPng,
+                [In] IntPtr origPng,
                 [In] UIntPtr origpngSize,
                 in CZopfliPNGOptions pngOptions,
                 [In] bool verbose,
@@ -56,7 +56,7 @@ namespace ZopfliSharp
         /// <returns>Result PNG binary.</returns>
         public static byte[] OptimizePng(byte[] pngData, bool verbose = false)
         {
-            return OptimizePng(pngData, pngData.LongLength, verbose);
+            return OptimizePng(pngData, 0, pngData.Length, verbose);
         }
 
 
@@ -64,14 +64,15 @@ namespace ZopfliSharp
         /// Re-compress deflated data in PNG with Zopfli algorithm.
         /// </summary>
         /// <param name="pngData">Source PNG binary.</param>
-        /// <param name="pngDataLength">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(byte[] pngData, long pngDataLength, bool verbose = false)
+        public static byte[] OptimizePng(byte[] pngData, int offset, int count, bool verbose = false)
         {
             using (var cPngOptions = CZopfliPNGOptions.GetDefault())
             {
-                return OptimizePng(pngData, pngDataLength, cPngOptions, verbose);
+                return OptimizePng(pngData, offset, count, cPngOptions, verbose);
             }
         }
 
@@ -85,7 +86,7 @@ namespace ZopfliSharp
         /// <returns>Result PNG binary.</returns>
         public static byte[] OptimizePng(byte[] pngData, ZopfliPNGOptions pngOptions, bool verbose = false)
         {
-            return OptimizePng(pngData, pngData.LongLength, pngOptions, verbose);
+            return OptimizePng(pngData, 0, pngData.Length, pngOptions, verbose);
         }
 
 
@@ -93,15 +94,16 @@ namespace ZopfliSharp
         /// Re-compress deflated data in PNG with Zopfli algorithm.
         /// </summary>
         /// <param name="pngData">Source PNG binary.</param>
-        /// <param name="pngDataLength">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(byte[] pngData, long pngDataLength, ZopfliPNGOptions pngOptions, bool verbose = false)
+        public static byte[] OptimizePng(byte[] pngData, int offset, int count, ZopfliPNGOptions pngOptions, bool verbose = false)
         {
             using (var cPngOptions = new CZopfliPNGOptions(pngOptions))
             {
-                return OptimizePng(pngData, pngDataLength, cPngOptions, verbose);
+                return OptimizePng(pngData, offset, count, cPngOptions, verbose);
             }
         }
 
@@ -110,19 +112,30 @@ namespace ZopfliSharp
         /// Re-compress deflated data in PNG with Zopfli algorithm.
         /// </summary>
         /// <param name="pngData">Source PNG binary.</param>
-        /// <param name="pngDataLength">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
         /// <param name="cPngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        internal static byte[] OptimizePng(byte[] pngData, long pngDataLength, in CZopfliPNGOptions cPngOptions, bool verbose = false)
+        internal static byte[] OptimizePng(byte[] pngData, int offset, int count, in CZopfliPNGOptions cPngOptions, bool verbose = false)
         {
-            var error = UnsafeNativeMethods.CZopfliPNGOptimize(
-                pngData,
-                (UIntPtr)pngDataLength,
-                cPngOptions,
-                verbose,
-                out var resultPngHandle,
-                out var resultPngSize);
+            int error;
+            MallocedMemoryHandle resultPngHandle;
+            UIntPtr resultPngSize;
+
+            unsafe
+            {
+                fixed (byte* pPngData = &pngData[offset])
+                {
+                    error = UnsafeNativeMethods.CZopfliPNGOptimize(
+                        (IntPtr)pPngData,
+                        (UIntPtr)count,
+                        cPngOptions,
+                        verbose,
+                        out resultPngHandle,
+                        out resultPngSize);
+                }
+            }
 
             if (resultPngHandle.IsInvalid)
             {

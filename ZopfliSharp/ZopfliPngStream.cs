@@ -51,7 +51,7 @@ namespace ZopfliSharp
         /// <summary>
         /// Options for PNG optimization.
         /// </summary>
-        /// <seealso cref="ZopfliPng.OptimizePng(byte[], long, ZopfliPNGOptions, bool)"/>
+        /// <seealso cref="ZopfliPng.OptimizePng(byte[], int, int, ZopfliPNGOptions, bool)"/>
         public ZopfliPNGOptions PNGOptions { get; set; }
 
         /// <summary>
@@ -111,7 +111,7 @@ namespace ZopfliSharp
             _canWrite = false;
 
             // Take a long time
-            var compressedData = ZopfliPng.OptimizePng(_buffer, _position, PNGOptions ?? ZopfliPNGOptions.GetDefault());
+            var compressedData = ZopfliPng.OptimizePng(_buffer, 0, _position, PNGOptions ?? ZopfliPNGOptions.GetDefault());
 
             BaseStream.Write(compressedData, 0, compressedData.Length);
         }

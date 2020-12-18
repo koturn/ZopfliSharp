@@ -40,7 +40,7 @@ namespace ZopfliSharp
             public static extern unsafe void ZopfliCompress(
                 in ZopfliOptions options,
                 [In] ZopfliFormat outputType,
-                [In] byte[] inData,
+                [In] IntPtr inData,
                 [In] UIntPtr inDataSize,
                 out MallocedMemoryHandle outData,
                 out UIntPtr outDatasize);
@@ -55,7 +55,7 @@ namespace ZopfliSharp
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, ZopfliFormat format = ZopfliFormat.GZip)
         {
-            return Compress(data, data.LongLength, format);
+            return Compress(data, 0, data.Length, format);
         }
 
 
@@ -63,12 +63,13 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="dataLength">Source binary data length.</param>
+        /// <param name="offset">Source binary data offset.</param>
+        /// <param name="count">Source binary data length.</param>
         /// <param name="format">Output format.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
-        public static byte[] Compress(byte[] data, long dataLength, ZopfliFormat format = ZopfliFormat.GZip)
+        public static byte[] Compress(byte[] data, int offset, int count, ZopfliFormat format = ZopfliFormat.GZip)
         {
-            return Compress(data, dataLength, ZopfliOptions.GetDefault(), format);
+            return Compress(data, offset, count, ZopfliOptions.GetDefault(), format);
         }
 
 
@@ -81,7 +82,7 @@ namespace ZopfliSharp
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, in ZopfliOptions options)
         {
-            return Compress(data, data.LongLength, options);
+            return Compress(data, 0, data.Length, options);
         }
 
 
@@ -89,12 +90,13 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="dataLength">Source binary data length.</param>
+        /// <param name="offset">Source binary data offset.</param>
+        /// <param name="count">Source binary data length.</param>
         /// <param name="options">Options for ZopfliPNG.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
-        public static byte[] Compress(byte[] data, long dataLength, in ZopfliOptions options)
+        public static byte[] Compress(byte[] data, int offset, int count, in ZopfliOptions options)
         {
-            return Compress(data, dataLength, options, ZopfliFormat.GZip);
+            return Compress(data, offset, count, options, ZopfliFormat.GZip);
         }
 
 
@@ -107,7 +109,7 @@ namespace ZopfliSharp
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
         {
-            return Compress(data, data.LongLength, options, format);
+            return Compress(data, 0, data.Length, options, format);
         }
 
 
@@ -115,19 +117,28 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="dataLength">Source binary data length.</param>
+        /// <param name="offset">Source binary data offset.</param>
+        /// <param name="count">Source binary data length.</param>
         /// <param name="options">Options for ZopfliPNG.</param>
         /// <param name="format">Output format.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
-        public static byte[] Compress(byte[] data, long dataLength, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
+        public static byte[] Compress(byte[] data, int offset, int count, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
         {
-            UnsafeNativeMethods.ZopfliCompress(
-                options,
-                format,
-                data,
-                (UIntPtr)dataLength,
-                out var compressedDataHandle,
-                out var compressedDataSize);
+            MallocedMemoryHandle compressedDataHandle;
+            UIntPtr compressedDataSize;
+            unsafe
+            {
+                fixed (byte* pData = &data[offset])
+                {
+                    UnsafeNativeMethods.ZopfliCompress(
+                        options,
+                        format,
+                        (IntPtr)pData,
+                        (UIntPtr)count,
+                        out compressedDataHandle,
+                        out compressedDataSize);
+                }
+            }
 
             using (compressedDataHandle)
             {
