@@ -48,27 +48,6 @@ namespace ZopfliSharp
 
 
         /// <summary>
-        /// Output binary format types.
-        /// </summary>
-        public enum ZopfliFormat
-        {
-            /// <summary>
-            /// Output to gzip format.
-            /// </summary>
-            GZip,
-            /// <summary>
-            /// Output to zlib format.
-            /// </summary>
-            ZLib,
-            /// <summary>
-            /// Output to deflate format
-            /// </summary>
-            Deflate 
-        }
-
-
-
-        /// <summary>
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
@@ -157,5 +136,25 @@ namespace ZopfliSharp
                 return compressedData;
             }
         }
+    }
+
+
+    /// <summary>
+    /// Output binary format types.
+    /// </summary>
+    public enum ZopfliFormat
+    {
+        /// <summary>
+        /// Output to gzip format.
+        /// </summary>
+        GZip,
+        /// <summary>
+        /// Output to zlib format.
+        /// </summary>
+        ZLib,
+        /// <summary>
+        /// Output to deflate format
+        /// </summary>
+        Deflate
     }
 }

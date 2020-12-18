@@ -83,12 +83,10 @@ namespace ZopfliSharp.Internal
         /// Zopfli number of iterations on large images.
         /// </summary>
         public int NumIterationsLarge { get; set; }
-#pragma warning disable IDE0051
         /// <summary>
         /// Unused, left for backwards compatiblity.
         /// </summary>
         private readonly int _blockSplitStrategy;
-#pragma warning restore IDE0051
 
 
         /// <summary>

@@ -121,22 +121,22 @@ namespace ZopfliSharp
                 (UIntPtr)pngDataLength,
                 cPngOptions,
                 verbose,
-                out var pResultPngHandle,
+                out var resultPngHandle,
                 out var resultPngSize);
 
-            if (pResultPngHandle.IsInvalid)
+            if (resultPngHandle.IsInvalid)
             {
                 return null;
             }
 
-            using (pResultPngHandle)
+            using (resultPngHandle)
             {
                 if (error != 0)
                 {
                     return null;
                 }
                 var resultPng = new byte[(ulong)resultPngSize];
-                Marshal.Copy(pResultPngHandle.DangerousGetHandle(), resultPng, 0, resultPng.Length);
+                Marshal.Copy(resultPngHandle.DangerousGetHandle(), resultPng, 0, resultPng.Length);
                 return resultPng;
             }
         }
