@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 using System.Security;
+using ZopfliSharp.Exceptions;
 using ZopfliSharp.Internal;
 
 
@@ -117,6 +118,7 @@ namespace ZopfliSharp
         /// <param name="cPngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
+        /// <exception cref="ZopfliPngException">Thrown when failed to optimize PNG data.</exception>
         internal static byte[] OptimizePng(byte[] pngData, int offset, int count, in CZopfliPNGOptions cPngOptions, bool verbose = false)
         {
             int error;
@@ -137,16 +139,11 @@ namespace ZopfliSharp
                 }
             }
 
-            if (resultPngHandle.IsInvalid)
-            {
-                return null;
-            }
-
             using (resultPngHandle)
             {
                 if (error != 0)
                 {
-                    return null;
+                    throw new ZopfliPngException(error);
                 }
                 var resultPng = new byte[(ulong)resultPngSize];
                 Marshal.Copy(resultPngHandle.DangerousGetHandle(), resultPng, 0, resultPng.Length);
