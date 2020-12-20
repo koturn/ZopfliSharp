@@ -12,7 +12,7 @@ namespace ZopfliSharp.Internal
     /// <para>This structure is used to interact with zopflipng.dll.</para>
     /// </summary>
     /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPNGSetDefaults(out CZopfliPNGOptions)"/>
-    /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPNGOptimize(byte[], UIntPtr, in CZopfliPNGOptions, bool, out MallocedMemoryHandle, out UIntPtr)"/>
+    /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPNGOptimize(IntPtr, UIntPtr, in CZopfliPNGOptions, bool, out MallocedMemoryHandle, out UIntPtr)"/>
     [StructLayout(LayoutKind.Sequential)]
     internal struct CZopfliPNGOptions : IDisposable
     {
@@ -91,12 +91,10 @@ namespace ZopfliSharp.Internal
         /// Zopfli number of iterations on large images.
         /// </summary>
         public int NumIterationsLarge { get; set; }
-#pragma warning disable IDE0051
         /// <summary>
         /// Unused, left for backwards compatiblity.
         /// </summary>
         private readonly int _blockSplitStrategy;
-#pragma warning restore IDE0051
 
 
         /// <summary>

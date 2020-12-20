@@ -1,3 +1,4 @@
+using System;
 using System.Runtime.InteropServices;
 
 
@@ -8,7 +9,7 @@ namespace ZopfliSharp
     /// <para>This structure is used to interact with zopfli.dll.</para>
     /// </summary>
     /// <seealso cref="Zopfli.UnsafeNativeMethods.ZopfliInitOptions(out ZopfliOptions)"/>
-    /// <seealso cref="Zopfli.UnsafeNativeMethods.ZopfliCompress(in ZopfliOptions, Zopfli.ZopfliFormat, byte[], System.UIntPtr, out Internal.MallocedMemoryHandle, out System.UIntPtr)"/>
+    /// <seealso cref="Zopfli.UnsafeNativeMethods.ZopfliCompress(in ZopfliOptions, ZopfliFormat, IntPtr, UIntPtr, out Internal.MallocedMemoryHandle, out UIntPtr)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct ZopfliOptions
     {
@@ -34,9 +35,7 @@ namespace ZopfliSharp
         /// <summary>
         /// No longer used, left for compatibility.
         /// </summary>
-#pragma warning disable IDE0051
         private readonly bool _blockSplittingLast;
-#pragma warning restore IDE0051
         /// <summary>
         /// <para>Maximum amount of blocks to split into (0 for unlimited, but this can give extreme results that hurt compression on some files).</para>
         /// <para>Default value: 15.</para>

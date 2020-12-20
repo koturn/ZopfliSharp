@@ -1,0 +1,22 @@
+version: 1.0.{build}
+image: Visual Studio 2019
+install:
+- cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"'
+build_script:
+- cmd: >-
+    msbuild /nologo /m /t:restore /p:Configuration=Release;Platform="Any CPU" ZopfliSharp.sln
+
+    msbuild /nologo /m /p:Configuration=Release;Platform="Any CPU" ZopfliSharp.sln
+
+    mkdir Artifacts\ZopfliSharp
+
+    copy ZopfliSharp\bin\Release\netstandard2.0\ZopfliSharp.dll Artifacts\ZopfliSharp\
+
+    copy ZopfliSharp\bin\Release\netstandard2.0\ZopfliSharp.pdb Artifacts\ZopfliSharp\
+
+    cd Artifacts
+
+    7z a -mx=9 -r ZopfliSharp.zip ZopfliSharp\
+artifacts:
+- path: Artifacts\ZopfliSharp.zip
+  name: ZopfliSharp
