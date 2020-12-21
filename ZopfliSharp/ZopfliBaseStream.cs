@@ -4,6 +4,9 @@ using System.IO;
 
 namespace ZopfliSharp
 {
+    /// <summary>
+    /// A super class of <see cref="ZopfliStream"/> and <see cref="ZopfliPngStream"/>.
+    /// </summary>
     public abstract class ZopfliBaseStream : Stream
     {
         /// <summary>

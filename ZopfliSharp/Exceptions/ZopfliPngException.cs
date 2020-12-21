@@ -4,6 +4,9 @@ using System.Runtime.Serialization;
 
 namespace ZopfliSharp.Exceptions
 {
+    /// <summary>
+    /// Represents errors that occur during zopfli compression.
+    /// </summary>
     [Serializable]
     public class ZopfliPngException : Exception
     {
