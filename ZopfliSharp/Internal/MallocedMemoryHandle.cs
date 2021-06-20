@@ -5,16 +5,16 @@ using System.Runtime.InteropServices;
 namespace ZopfliSharp.Internal
 {
     /// <summary>
-    /// <para><see cref="SafeHandle"/> for malloced memory.</para>
+    /// <para><see cref="SafeBuffer"/> for malloced memory.</para>
     /// <para>Free memory using <see cref="Marshal.FreeCoTaskMem(IntPtr)"/>.</para>
     /// </summary>
-    internal sealed class MallocedMemoryHandle : SafeHandle
+    internal sealed class MallocedMemoryHandle : SafeBuffer
     {
         /// <summary>
         /// Initialize with null pointer (<see cref="IntPtr.Zero"/>).
         /// </summary>
         private MallocedMemoryHandle()
-            : base(IntPtr.Zero, true)
+            : base(true)
         {
         }
 

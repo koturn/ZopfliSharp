@@ -124,6 +124,92 @@ namespace ZopfliSharp
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, int offset, int count, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
         {
+            var compressedDataHandle = CompressUnmanaged(data, offset, count, options, format);
+            using (compressedDataHandle)
+            {
+                var compressedData = new byte[compressedDataHandle.ByteLength];
+                Marshal.Copy(compressedDataHandle.DangerousGetHandle(), compressedData, 0, compressedData.Length);
+                return compressedData;
+            }
+        }
+
+
+        /// <summary>
+        /// Compress data with Zopfli algorithm.
+        /// </summary>
+        /// <param name="data">Source binary data.</param>
+        /// <param name="format">Output format.</param>
+        /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
+        public static SafeBuffer CompressUnmanaged(byte[] data, ZopfliFormat format = ZopfliFormat.GZip)
+        {
+            return CompressUnmanaged(data, 0, data.Length, format);
+        }
+
+
+        /// <summary>
+        /// Compress data with Zopfli algorithm.
+        /// </summary>
+        /// <param name="data">Source binary data.</param>
+        /// <param name="offset">Source binary data offset.</param>
+        /// <param name="count">Source binary data length.</param>
+        /// <param name="format">Output format.</param>
+        /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
+        public static SafeBuffer CompressUnmanaged(byte[] data, int offset, int count, ZopfliFormat format = ZopfliFormat.GZip)
+        {
+            return CompressUnmanaged(data, offset, count, ZopfliOptions.GetDefault(), format);
+        }
+
+
+        /// <summary>
+        /// Compress data with Zopfli algorithm.
+        /// </summary>
+        /// <param name="data">Source binary data.</param>
+        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
+        public static SafeBuffer CompressUnmanaged(byte[] data, in ZopfliOptions options)
+        {
+            return CompressUnmanaged(data, 0, data.Length, options);
+        }
+
+
+        /// <summary>
+        /// Compress data with Zopfli algorithm.
+        /// </summary>
+        /// <param name="data">Source binary data.</param>
+        /// <param name="offset">Source binary data offset.</param>
+        /// <param name="count">Source binary data length.</param>
+        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
+        public static SafeBuffer CompressUnmanaged(byte[] data, int offset, int count, in ZopfliOptions options)
+        {
+            return CompressUnmanaged(data, offset, count, options, ZopfliFormat.GZip);
+        }
+
+
+        /// <summary>
+        /// Compress data with Zopfli algorithm.
+        /// </summary>
+        /// <param name="data">Source binary data.</param>
+        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="format">Output format.</param>
+        /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
+        public static SafeBuffer CompressUnmanaged(byte[] data, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
+        {
+            return CompressUnmanaged(data, 0, data.Length, options, format);
+        }
+
+
+        /// <summary>
+        /// Compress data with Zopfli algorithm.
+        /// </summary>
+        /// <param name="data">Source binary data.</param>
+        /// <param name="offset">Source binary data offset.</param>
+        /// <param name="count">Source binary data length.</param>
+        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="format">Output format.</param>
+        /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
+        public static SafeBuffer CompressUnmanaged(byte[] data, int offset, int count, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
+        {
             MallocedMemoryHandle compressedDataHandle;
             UIntPtr compressedDataSize;
             unsafe
@@ -140,12 +226,8 @@ namespace ZopfliSharp
                 }
             }
 
-            using (compressedDataHandle)
-            {
-                var compressedData = new byte[(ulong)compressedDataSize];
-                Marshal.Copy(compressedDataHandle.DangerousGetHandle(), compressedData, 0, compressedData.Length);
-                return compressedData;
-            }
+            compressedDataHandle.Initialize((ulong)compressedDataSize);
+            return compressedDataHandle;
         }
     }
 
