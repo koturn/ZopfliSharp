@@ -39,7 +39,7 @@ namespace ZopfliSharp
             /// <returns>Status code. 0 means success, otherwise it means failure.</returns>
             [DllImport("zopflipng.dll", ExactSpelling = true)]
             [SuppressUnmanagedCodeSecurity]
-            public static extern unsafe int CZopfliPNGOptimize(
+            public static extern int CZopfliPNGOptimize(
                 [In] IntPtr origPng,
                 [In] UIntPtr origpngSize,
                 in CZopfliPNGOptions pngOptions,

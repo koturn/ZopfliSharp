@@ -37,7 +37,7 @@ namespace ZopfliSharp
             /// <param name="outDatasize">Pointer to the dynamic output array size</param>
             [DllImport("zopfli.dll", ExactSpelling = true)]
             [SuppressUnmanagedCodeSecurity]
-            public static extern unsafe void ZopfliCompress(
+            public static extern void ZopfliCompress(
                 in ZopfliOptions options,
                 [In] ZopfliFormat outputType,
                 [In] IntPtr inData,
