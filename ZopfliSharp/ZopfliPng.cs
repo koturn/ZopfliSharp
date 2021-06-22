@@ -39,7 +39,7 @@ namespace ZopfliSharp
             /// <returns>Status code. 0 means success, otherwise it means failure.</returns>
             [DllImport("zopflipng.dll", ExactSpelling = true)]
             [SuppressUnmanagedCodeSecurity]
-            public static extern unsafe int CZopfliPNGOptimize(
+            public static extern int CZopfliPNGOptimize(
                 [In] IntPtr origPng,
                 [In] UIntPtr origpngSize,
                 in CZopfliPNGOptions pngOptions,
@@ -117,9 +117,91 @@ namespace ZopfliSharp
         /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
         /// <param name="cPngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
-        /// <returns>Result PNG binary.</returns>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
         /// <exception cref="ZopfliPngException">Thrown when failed to optimize PNG data.</exception>
         internal static byte[] OptimizePng(byte[] pngData, int offset, int count, in CZopfliPNGOptions cPngOptions, bool verbose = false)
+        {
+            var resultPngHandle = OptimizePngUnmanaged(pngData, offset, count, in cPngOptions, verbose);
+            using (resultPngHandle)
+            {
+                var resultPng = new byte[resultPngHandle.ByteLength];
+                Marshal.Copy(resultPngHandle.DangerousGetHandle(), resultPng, 0, resultPng.Length);
+                return resultPng;
+            }
+        }
+
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, bool verbose = false)
+        {
+            return OptimizePngUnmanaged(pngData, 0, pngData.Length, verbose);
+        }
+
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, bool verbose = false)
+        {
+            using (var cPngOptions = CZopfliPNGOptions.GetDefault())
+            {
+                return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, verbose);
+            }
+        }
+
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, ZopfliPNGOptions pngOptions, bool verbose = false)
+        {
+            return OptimizePngUnmanaged(pngData, 0, pngData.Length, pngOptions, verbose);
+        }
+
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, ZopfliPNGOptions pngOptions, bool verbose = false)
+        {
+            using (var cPngOptions = new CZopfliPNGOptions(pngOptions))
+            {
+                return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, verbose);
+            }
+        }
+
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="cPngOptions">Options for ZopfliPNG.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        /// <exception cref="ZopfliPngException">Thrown when failed to optimize PNG data.</exception>
+        internal static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, in CZopfliPNGOptions cPngOptions, bool verbose = false)
         {
             int error;
             MallocedMemoryHandle resultPngHandle;
@@ -139,16 +221,13 @@ namespace ZopfliSharp
                 }
             }
 
-            using (resultPngHandle)
+            resultPngHandle.Initialize((ulong)resultPngSize);
+            if (error != 0)
             {
-                if (error != 0)
-                {
-                    throw new ZopfliPngException(error);
-                }
-                var resultPng = new byte[(ulong)resultPngSize];
-                Marshal.Copy(resultPngHandle.DangerousGetHandle(), resultPng, 0, resultPng.Length);
-                return resultPng;
+                throw new ZopfliPngException(error);
             }
+
+            return resultPngHandle;
         }
     }
 }
