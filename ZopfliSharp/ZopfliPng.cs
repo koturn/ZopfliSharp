@@ -121,8 +121,7 @@ namespace ZopfliSharp
         /// <exception cref="ZopfliPngException">Thrown when failed to optimize PNG data.</exception>
         internal static byte[] OptimizePng(byte[] pngData, int offset, int count, in CZopfliPNGOptions cPngOptions, bool verbose = false)
         {
-            var resultPngHandle = OptimizePngUnmanaged(pngData, offset, count, in cPngOptions, verbose);
-            using (resultPngHandle)
+            using (var resultPngHandle = OptimizePngUnmanaged(pngData, offset, count, in cPngOptions, verbose))
             {
                 var resultPng = new byte[resultPngHandle.ByteLength];
                 Marshal.Copy(resultPngHandle.DangerousGetHandle(), resultPng, 0, resultPng.Length);

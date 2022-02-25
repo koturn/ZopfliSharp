@@ -124,8 +124,7 @@ namespace ZopfliSharp
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, int offset, int count, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
         {
-            var compressedDataHandle = CompressUnmanaged(data, offset, count, options, format);
-            using (compressedDataHandle)
+            using (var compressedDataHandle = CompressUnmanaged(data, offset, count, options, format))
             {
                 var compressedData = new byte[compressedDataHandle.ByteLength];
                 Marshal.Copy(compressedDataHandle.DangerousGetHandle(), compressedData, 0, compressedData.Length);
