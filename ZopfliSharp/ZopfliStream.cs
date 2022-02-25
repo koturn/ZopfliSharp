@@ -15,11 +15,22 @@ namespace ZopfliSharp
         /// <seealso cref="Zopfli.Compress(byte[], in ZopfliOptions, ZopfliFormat)"/>
         /// <seealso cref="Zopfli.Compress(byte[], int, int, in ZopfliOptions)"/>
         /// <seealso cref="Zopfli.Compress(byte[], int, int, in ZopfliOptions, ZopfliFormat)"/>
-        public ZopfliOptions Options { get; set; }
+        public ZopfliOptions Options
+        {
+            get => _options;
+            set => _options = value;
+        }
         /// <summary>
         /// Output binary format.
         /// </summary>
         public ZopfliFormat Format { get; set; }
+
+        /// <summary>
+        /// Options for Zopfli compression.
+        /// </summary>
+        /// <seealso cref="Options"/>
+        private ZopfliOptions _options;
+
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ZopfliStream"/> class
@@ -58,7 +69,7 @@ namespace ZopfliSharp
         public ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, bool leaveOpen = true)
             : base(stream, leaveOpen)
         {
-            Options = options;
+            _options = options;
             Format = format;
         }
 
@@ -73,7 +84,7 @@ namespace ZopfliSharp
         /// <returns>Compressed data.</returns>
         protected override byte[] CompressData(byte[] data, int offset, int count)
         {
-            return Zopfli.Compress(data, offset, count, Options, Format);
+            return Zopfli.Compress(data, offset, count, _options, Format);
         }
     }
 }
