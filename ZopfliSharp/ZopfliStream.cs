@@ -73,7 +73,7 @@ namespace ZopfliSharp
         /// <returns>Compressed data.</returns>
         protected override byte[] CompressData(byte[] data, int offset, int count)
         {
-            return Zopfli.Compress(data, 0, count, Options, Format);
+            return Zopfli.Compress(data, offset, count, Options, Format);
         }
     }
 }
