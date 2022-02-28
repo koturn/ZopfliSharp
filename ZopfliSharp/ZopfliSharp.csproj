@@ -6,10 +6,11 @@
     <Company>koturn</Company>
     <Description>A P/Invoke library for google/zopfli (zopfli.dll and zopflipng.dll).</Description>
     <Copyright>Copyright (C) 2020 koturn All Rights Reserverd.</Copyright>
-    <PackageLicenseFile>LICENSE</PackageLicenseFile>
+    <PackageLicenseFile>..\LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/koturn/ZipfliSharp</PackageProjectUrl>
     <RepositoryUrl>https://github.com/koturn/ZipfliSharp</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -21,6 +22,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
+    </None>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
