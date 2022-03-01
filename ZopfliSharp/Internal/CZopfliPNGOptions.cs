@@ -218,7 +218,7 @@ namespace ZopfliSharp.Internal
         /// <returns>Tuple of pointer to the filter strategies and the number of them.</returns>
         private static (IntPtr FilterStrategiesPointer, int NumFilterStrategies) CreateFilterStrategies(List<ZopfliPNGFilterStrategy> filterStrategies)
         {
-            if (filterStrategies == null || filterStrategies.Count == 0)
+            if (filterStrategies is null || filterStrategies.Count == 0)
             {
                 return (IntPtr.Zero, 0);
             }
@@ -247,7 +247,7 @@ namespace ZopfliSharp.Internal
         /// <returns>Tuple of pointer to the chunk names and the number of them.</returns>
         private static (IntPtr KeepChunksPointer, int NumKeepChunks) CreateKeepChunks(List<string> keepChunks)
         {
-            if (keepChunks == null || keepChunks.Count == 0)
+            if (keepChunks is null || keepChunks.Count == 0)
             {
                 return (IntPtr.Zero, 0);
             }
