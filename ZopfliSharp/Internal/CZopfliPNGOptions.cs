@@ -264,7 +264,7 @@ namespace ZopfliSharp.Internal
                 var keepChunksPointer = Marshal.AllocCoTaskMem(keepChunksCount * sizeof(byte*) + memorySize);
 
                 var p = (byte**)keepChunksPointer;
-                var q = (byte*)(&p[keepChunksCount]);
+                var q = (byte*)&p[keepChunksCount];
                 for (int i = 0; i < keepChunksCount; i++)
                 {
                     p[i] = q;
