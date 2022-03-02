@@ -124,8 +124,37 @@ namespace ZopfliSharp
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, int offset, int count, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
         {
-            var compressedDataHandle = CompressUnmanaged(data, offset, count, options, format);
-            using (compressedDataHandle)
+            using (var compressedDataHandle = CompressUnmanaged(data, offset, count, options, format))
+            {
+                var compressedData = new byte[compressedDataHandle.ByteLength];
+                Marshal.Copy(compressedDataHandle.DangerousGetHandle(), compressedData, 0, compressedData.Length);
+                return compressedData;
+            }
+        }
+
+
+        /// <summary>
+        /// Compress data with Zopfli algorithm.
+        /// </summary>
+        /// <param name="data">Source binary data.</param>
+        /// <param name="format">Output format.</param>
+        /// <returns>Compressed data of <paramref name="data"/>.</returns>
+        public static byte[] Compress(ReadOnlySpan<byte> data, ZopfliFormat format = ZopfliFormat.GZip)
+        {
+            return Compress(data, ZopfliOptions.GetDefault(), format);
+        }
+
+
+        /// <summary>
+        /// Compress data with Zopfli algorithm.
+        /// </summary>
+        /// <param name="data">Source binary data.</param>
+        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="format">Output format.</param>
+        /// <returns>Compressed data of <paramref name="data"/>.</returns>
+        public static byte[] Compress(ReadOnlySpan<byte> data, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
+        {
+            using (var compressedDataHandle = CompressUnmanaged(data, options, format))
             {
                 var compressedData = new byte[compressedDataHandle.ByteLength];
                 Marshal.Copy(compressedDataHandle.DangerousGetHandle(), compressedData, 0, compressedData.Length);
@@ -229,25 +258,47 @@ namespace ZopfliSharp
             compressedDataHandle.Initialize((ulong)compressedDataSize);
             return compressedDataHandle;
         }
-    }
 
 
-    /// <summary>
-    /// Output binary format types.
-    /// </summary>
-    public enum ZopfliFormat
-    {
         /// <summary>
-        /// Output to gzip format.
+        /// Compress data with Zopfli algorithm.
         /// </summary>
-        GZip,
+        /// <param name="data">Source binary data.</param>
+        /// <param name="format">Output format.</param>
+        /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
+        public static SafeBuffer CompressUnmanaged(ReadOnlySpan<byte> data, ZopfliFormat format = ZopfliFormat.GZip)
+        {
+            return CompressUnmanaged(data, ZopfliOptions.GetDefault(), format);
+        }
+
+
         /// <summary>
-        /// Output to zlib format.
+        /// Compress data with Zopfli algorithm.
         /// </summary>
-        ZLib,
-        /// <summary>
-        /// Output to deflate format
-        /// </summary>
-        Deflate
+        /// <param name="data">Source binary data.</param>
+        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="format">Output format.</param>
+        /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
+        public static SafeBuffer CompressUnmanaged(ReadOnlySpan<byte> data, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
+        {
+            MallocedMemoryHandle compressedDataHandle;
+            UIntPtr compressedDataSize;
+            unsafe
+            {
+                fixed (byte* pData = data)
+                {
+                    UnsafeNativeMethods.ZopfliCompress(
+                        options,
+                        format,
+                        (IntPtr)pData,
+                        (UIntPtr)data.Length,
+                        out compressedDataHandle,
+                        out compressedDataSize);
+                }
+            }
+
+            compressedDataHandle.Initialize((ulong)compressedDataSize);
+            return compressedDataHandle;
+        }
     }
 }

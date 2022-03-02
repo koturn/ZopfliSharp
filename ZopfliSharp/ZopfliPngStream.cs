@@ -52,7 +52,7 @@ namespace ZopfliSharp
         /// <returns>Compressed PNG data.</returns>
         protected override byte[] CompressData(byte[] data, int offset, int count)
         {
-            return ZopfliPng.OptimizePng(data, 0, count, PNGOptions);
+            return ZopfliPng.OptimizePng(data, offset, count, PNGOptions);
         }
     }
 }
