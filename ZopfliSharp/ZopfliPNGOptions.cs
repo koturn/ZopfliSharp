@@ -106,9 +106,9 @@ namespace ZopfliSharp
         public ZopfliPNGOptions(
             bool lossyTransparent = DefaultLossyTransparent,
             bool lossy8bit = DefaultLossy8bit,
-            List<ZopfliPNGFilterStrategy> filterStrategies = null,
+            List<ZopfliPNGFilterStrategy>? filterStrategies = null,
             bool autoFilterStrategy = DefaultAutoFilterStrategy,
-            List<string> keepChunks = null,
+            List<string>? keepChunks = null,
             bool useZopfli = DefaultUseZopfli,
             int numIterations = DefaultNumIterations,
             int numIterationsLarge = DefaultNumIterationsLarge)
