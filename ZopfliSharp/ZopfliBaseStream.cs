@@ -114,8 +114,11 @@ namespace ZopfliSharp
         /// <param name="disposing">true to release both managed and unmanaged resources; false to release only unmanaged resources.</param>
         protected override void Dispose(bool disposing)
         {
-            Flush();
-            _canWrite = false;
+            if (_canWrite)
+            {
+                Flush();
+                _canWrite = false;
+            }
             if (!LeaveOpen)
             {
                 BaseStream.Close();
