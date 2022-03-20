@@ -651,6 +651,39 @@ namespace ZopfliSharp
 
 
         /// <summary>
+        /// Deflate given data block.
+        /// </summary>
+        /// <param name="buffer">Source binary data.</param>
+        /// <param name="offset">Source binary data offset.</param>
+        /// <param name="count">Source binary data length.</param>
+        /// <param name="options">Options for Zopfli.</param>
+        /// <param name="blockType">Comression rule of each block.</param>
+        /// <param name="isFinal">A flag which represents this block is final or not.</param>
+        /// <param name="bitPointer">Bit position of output data which has been written.</param>
+        /// <param name="handle">Handle of unmanaged memory.</param>
+        internal static unsafe void DeflatePart(byte[] buffer, int offset, int count, in ZopfliOptions options, BlockType blockType, bool isFinal, ref byte bitPointer, ref MallocedMemoryHandle handle)
+        {
+
+            var outDataSize = (UIntPtr)handle.ByteLength;
+            fixed (byte* pBuffer = buffer)
+            {
+                var p = (IntPtr)pBuffer;
+                UnsafeNativeMethods.ZopfliDeflatePart(
+                    options,
+                    blockType,
+                    isFinal,
+                    p,
+                    (UIntPtr)offset,
+                    (UIntPtr)(offset + count),
+                    ref bitPointer,
+                    ref handle!,
+                    ref outDataSize);
+            }
+            handle.Initialize((ulong)outDataSize);
+        }
+
+
+        /// <summary>
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="handle">Intermidiate compressed data.</param>
@@ -759,7 +792,7 @@ namespace ZopfliSharp
         /// </summary>
         /// <param name="s">Destination stream.</param>
         /// <returns>Size of zlib header (always 2).</returns>
-        private static int WriteZLibHeader(Stream s)
+        internal static int WriteZLibHeader(Stream s)
         {
             // Compression Method and Flags.
             //   bits 0 to 3  CM     Compression method
@@ -794,7 +827,7 @@ namespace ZopfliSharp
         /// </summary>
         /// <param name="s">Destination stream.</param>
         /// <returns>Size of gzip header (always 10).</returns>
-        private static int WriteGZipHeader(Stream s)
+        internal static int WriteGZipHeader(Stream s)
         {
             var gzipHeader = new byte[] {
                 31,  // ID1
@@ -885,7 +918,7 @@ namespace ZopfliSharp
         /// <param name="s">Destination stream.</param>
         /// <param name="adler">Checksum value of Adler32.</param>
         /// <returns>Size of zlib footer (always 4 bytes).</returns>
-        private static int WriteZLibFooter(Stream s, uint adler)
+        internal static int WriteZLibFooter(Stream s, uint adler)
         {
             // Adler32 (Little Endian)
             s.WriteByte((byte)(adler >> 24));
@@ -904,7 +937,7 @@ namespace ZopfliSharp
         /// <param name="inflatedSize">Original data size.</param>
         /// <param name="crc">Checksum value of CRC-32.</param>
         /// <returns>Size of gzip header (always 8 bytes).</returns>
-        private static int WriteGZipFooter(Stream s, uint crc, uint inflatedSize)
+        internal static int WriteGZipFooter(Stream s, uint crc, uint inflatedSize)
         {
             // CRC-32 (Big Endian)
             s.WriteByte((byte)crc);

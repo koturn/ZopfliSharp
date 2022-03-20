@@ -16,6 +16,7 @@ namespace ZopfliSharp.Internal
         internal MallocedMemoryHandle()
             : base(true)
         {
+            Initialize(0);
         }
 
         /// <summary>
