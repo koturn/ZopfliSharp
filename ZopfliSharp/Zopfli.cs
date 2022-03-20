@@ -113,7 +113,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, in ZopfliOptions options)
         {
@@ -127,7 +127,7 @@ namespace ZopfliSharp
         /// <param name="data">Source binary data.</param>
         /// <param name="offset">Source binary data offset.</param>
         /// <param name="count">Source binary data length.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, int offset, int count, in ZopfliOptions options)
         {
@@ -139,7 +139,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
@@ -154,7 +154,7 @@ namespace ZopfliSharp
         /// <param name="data">Source binary data.</param>
         /// <param name="offset">Source binary data offset.</param>
         /// <param name="count">Source binary data length.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, int offset, int count, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
@@ -184,7 +184,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(ReadOnlySpan<byte> data, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
@@ -228,7 +228,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
         public static SafeBuffer CompressUnmanaged(byte[] data, in ZopfliOptions options)
         {
@@ -242,7 +242,7 @@ namespace ZopfliSharp
         /// <param name="data">Source binary data.</param>
         /// <param name="offset">Source binary data offset.</param>
         /// <param name="count">Source binary data length.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
         public static SafeBuffer CompressUnmanaged(byte[] data, int offset, int count, in ZopfliOptions options)
         {
@@ -254,7 +254,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
         public static SafeBuffer CompressUnmanaged(byte[] data, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
@@ -269,7 +269,7 @@ namespace ZopfliSharp
         /// <param name="data">Source binary data.</param>
         /// <param name="offset">Source binary data offset.</param>
         /// <param name="count">Source binary data length.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
         public static SafeBuffer CompressUnmanaged(byte[] data, int offset, int count, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
@@ -311,7 +311,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
         public static SafeBuffer CompressUnmanaged(ReadOnlySpan<byte> data, in ZopfliOptions options, ZopfliFormat format = ZopfliFormat.GZip)
@@ -371,7 +371,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
@@ -387,7 +387,7 @@ namespace ZopfliSharp
         /// <param name="data">Source binary data.</param>
         /// <param name="offset">Source binary data offset.</param>
         /// <param name="count">Source binary data length.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
@@ -401,7 +401,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
@@ -418,7 +418,7 @@ namespace ZopfliSharp
         /// <param name="data">Source binary data.</param>
         /// <param name="offset">Source binary data offset.</param>
         /// <param name="count">Source binary data length.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
@@ -452,7 +452,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
@@ -502,7 +502,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
@@ -518,7 +518,7 @@ namespace ZopfliSharp
         /// <param name="data">Source binary data.</param>
         /// <param name="offset">Source binary data offset.</param>
         /// <param name="count">Source binary data length.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
@@ -532,7 +532,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
@@ -549,7 +549,7 @@ namespace ZopfliSharp
         /// <param name="data">Source binary data.</param>
         /// <param name="offset">Source binary data offset.</param>
         /// <param name="count">Source binary data length.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
@@ -608,7 +608,7 @@ namespace ZopfliSharp
         /// Compress data with Zopfli algorithm.
         /// </summary>
         /// <param name="data">Source binary data.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="format">Output format.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
@@ -690,7 +690,7 @@ namespace ZopfliSharp
         /// <param name="pData">Pointer to source binary data.</param>
         /// <param name="offset">Source binary data offset.</param>
         /// <param name="count">Source binary data length.</param>
-        /// <param name="options">Options for ZopfliPNG.</param>
+        /// <param name="options">Options for Zopfli.</param>
         /// <param name="blockType">Comression rule of each block.</param>
         /// <param name="masterBlockSize">Split size of source binary data. Set 0 or negative value to disable splitting.</param>
         /// <returns><see cref="MallocedMemoryHandle"/> of compressed data.</returns>
