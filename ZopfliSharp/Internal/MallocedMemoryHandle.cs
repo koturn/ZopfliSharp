@@ -13,9 +13,20 @@ namespace ZopfliSharp.Internal
         /// <summary>
         /// Initialize with null pointer (<see cref="IntPtr.Zero"/>).
         /// </summary>
-        private MallocedMemoryHandle()
+        internal MallocedMemoryHandle()
             : base(true)
         {
+        }
+
+        /// <summary>
+        /// Allocate memory and initialize handle with it.
+        /// </summary>
+        /// <param name="size">Size of memory.</param>
+        internal MallocedMemoryHandle(int size)
+            : base(true)
+        {
+            handle = Marshal.AllocCoTaskMem(size);
+            Initialize((ulong)size);
         }
 
 
@@ -23,6 +34,17 @@ namespace ZopfliSharp.Internal
         /// True if the memory is not allocated (null pointer), otherwise false.
         /// </summary>
         public override bool IsInvalid => handle == IntPtr.Zero;
+
+
+        /// <summary>
+        /// Reallocate memory.
+        /// </summary>
+        /// <param name="size">Size of memory.</param>
+        public void ReAlloc(int size)
+        {
+            handle = Marshal.ReAllocCoTaskMem(handle, size);
+            Initialize((ulong)size);
+        }
 
 
         /// <summary>
