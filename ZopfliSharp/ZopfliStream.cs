@@ -16,6 +16,12 @@ namespace ZopfliSharp
         /// </summary>
         public const int DefaultCacheSize = 1000000;
 
+        /// <summary>
+        /// <para>Initial buffer size.</para>
+        /// <para>The value of the largest power of two less than 85K.</para>
+        /// </summary>
+        private const int InitialBufferSize = 65536;
+
 
         /// <summary>
         /// Options for Zopfli compression.
@@ -67,17 +73,17 @@ namespace ZopfliSharp
         /// </summary>
         private byte[]? _buffer;
         /// <summary>
+        /// Cache size of writing data.
+        /// </summary>
+        private int _cacheSize;
+        /// <summary>
         /// Current write position of <see cref="_buffer"/>.
         /// </summary>
         private int _position;
         /// <summary>
-        /// A flag whether <see cref="Write(byte[], int, int)"/> was called first or not.
+        /// State of writing data.
         /// </summary>
-        private bool _isHeaderWritten;
-        /// <summary>
-        /// A flag whether final compression was done or not.
-        /// </summary>
-        private bool _isFinalCompressDone;
+        private WriteState _writeState;
 
 
         /// <summary>
@@ -139,10 +145,10 @@ namespace ZopfliSharp
             _bitPointer = 0;
             _checksum = 0;
             _inflatedSize = 0;
-            _buffer = cacheSize > 0 ? new byte[cacheSize] : null;
+            _buffer = cacheSize > 0 ? new byte[0] : null;
+            _cacheSize = cacheSize;
             _position = 0;
-            _isHeaderWritten = false;
-            _isFinalCompressDone = false;
+            _writeState = WriteState.NoDataWritten;
         }
 
 
@@ -159,9 +165,9 @@ namespace ZopfliSharp
             var format = Format;
 
             // Write header if needed.
-            if (!_isHeaderWritten)
+            if (_writeState == WriteState.NoDataWritten)
             {
-                _isHeaderWritten = true;
+                _writeState = WriteState.HeaderWritten;
                 if (format == ZopfliFormat.GZip)
                 {
                     Zopfli.WriteGZipHeader(BaseStream);
@@ -184,8 +190,7 @@ namespace ZopfliSharp
                 _checksum = Adler32Util.Update(buffer, offset, count, _checksum);
             }
 
-            var sourceBuffer = _buffer;
-            if (sourceBuffer is null)
+            if (_buffer is null)
             {
                 // Immediate compress.
                 Compress(buffer, 0, count, IsFinal);
@@ -194,12 +199,13 @@ namespace ZopfliSharp
             {
                 while (count > 0)
                 {
-                    if (_position == sourceBuffer.Length)
+                    EnsureCapacity(_position + count, _cacheSize);
+                    if (_position == _cacheSize)
                     {
                         FlushCache(false);
                     }
-                    var nWrite = Math.Min(count, sourceBuffer.Length - _position);
-                    Buffer.BlockCopy(buffer, offset, sourceBuffer, _position, nWrite);
+                    var nWrite = Math.Min(count, _buffer.Length - _position);
+                    Buffer.BlockCopy(buffer, offset, _buffer, _position, nWrite);
                     _position += nWrite;
                     offset += nWrite;
                     count -= nWrite;
@@ -261,7 +267,7 @@ namespace ZopfliSharp
             _inflatedSize += (uint)count;
             if (isFinal)
             {
-                _isFinalCompressDone = true;
+                _writeState = WriteState.FinalBlockWritten;
             }
         }
 
@@ -275,7 +281,7 @@ namespace ZopfliSharp
             {
                 FlushCache(true);
             }
-            else if (!_isFinalCompressDone)
+            else if (_writeState != WriteState.FinalBlockWritten)
             {
                 Compress(new byte[1], 0, 0, true);
             }
@@ -302,6 +308,42 @@ namespace ZopfliSharp
             s.Flush();
 
             SetCanWrite(false);
+        }
+
+        /// <summary>
+        /// Make the size of <see cref="_buffer"/> greater than or equal to the <paramref name="requiredCapacity"/>.
+        /// </summary>
+        /// <param name="requiredCapacity">Required buffer size.</param>
+        /// <param name="maxCapacity">Maximum buffer size.</param>
+        /// <returns>true if size of <see cref="_buffer"/> is changed, otherwise false.</returns>
+        private bool EnsureCapacity(int requiredCapacity, int maxCapacity)
+        {
+            if (requiredCapacity < 0)
+            {
+                ThrowIOException("Required capacity is too long");
+                return false;
+            }
+            if (_buffer == null)
+            {
+                ThrowIOException($"{nameof(_buffer)} is null");
+                return false;
+            }
+            if (_buffer.Length == maxCapacity)
+            {
+                return false;
+            }
+            if (requiredCapacity > _buffer.Length)
+            {
+                _buffer = ChangeBufferSize(
+                    _buffer,
+                    Math.Min(
+                        maxCapacity,
+                        requiredCapacity < InitialBufferSize ? InitialBufferSize
+                            : requiredCapacity < (_buffer.Length * 2) ? (_buffer.Length * 2)
+                            : requiredCapacity));
+                return true;
+            }
+            return false;
         }
 
         /// <summary>
@@ -338,6 +380,26 @@ namespace ZopfliSharp
             {
                 ums.CopyTo(s);
             }
+        }
+
+
+        /// <summary>
+        /// Writing state.
+        /// </summary>
+        private enum WriteState
+        {
+            /// <summary>
+            /// No data is written.
+            /// </summary>
+            NoDataWritten,
+            /// <summary>
+            /// Header, and some data block is compressed and written to result memory.
+            /// </summary>
+            HeaderWritten,
+            /// <summary>
+            /// Final data block is compressed and written to result memory.
+            /// </summary>
+            FinalBlockWritten
         }
     }
 }
