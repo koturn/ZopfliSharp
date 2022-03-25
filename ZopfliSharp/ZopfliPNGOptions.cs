@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using ZopfliSharp.Internal;
 
@@ -116,10 +116,10 @@ namespace ZopfliSharp
         public ZopfliPNGOptions(
             bool lossyTransparent = DefaultLossyTransparent,
             bool lossy8bit = DefaultLossy8bit,
-            List<ZopfliPNGFilterStrategy> filterStrategies = null,
+            List<ZopfliPNGFilterStrategy>? filterStrategies = null,
             bool autoFilterStrategy = DefaultAutoFilterStrategy,
             bool keepColorType = DefaultKeepColorType,
-            List<string> keepChunks = null,
+            List<string>? keepChunks = null,
             bool useZopfli = DefaultUseZopfli,
             int numIterations = DefaultNumIterations,
             int numIterationsLarge = DefaultNumIterationsLarge)
