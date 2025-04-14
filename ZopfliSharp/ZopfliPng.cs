@@ -1,4 +1,7 @@
-﻿using System;
+#if NET7_0_OR_GREATER
+#    define SUPPORT_LIBRARY_IMPORT
+#endif  // NET7_0_OR_GREATER
+using System;
 using System.Runtime.InteropServices;
 using System.Security;
 using ZopfliSharp.Exceptions;
@@ -10,22 +13,33 @@ namespace ZopfliSharp
     /// <summary>
     /// P/Invoke methods for zopflipng.dll.
     /// </summary>
+#if SUPPORT_LIBRARY_IMPORT
+    public static partial class ZopfliPng
+#else
     public static class ZopfliPng
+#endif  // SUPPORT_LIBRARY_IMPORT
     {
         /// <summary>
         /// Native methods.
         /// </summary>
         [SuppressUnmanagedCodeSecurity]
+#if SUPPORT_LIBRARY_IMPORT
+        internal static partial class UnsafeNativeMethods
+#else
         internal static class UnsafeNativeMethods
+#endif  // SUPPORT_LIBRARY_IMPORT
         {
             /// <summary>
             /// Get default parameter of <see cref="ZopfliPNGOptions"/>.
             /// </summary>
             /// <param name="pngOptions">Options struct for ZopfliPNG.</param>
-            [DllImport("zopflipng.dll", ExactSpelling = true)]
-            [SuppressUnmanagedCodeSecurity]
+#if SUPPORT_LIBRARY_IMPORT
+            [LibraryImport("zopflipng.dll", EntryPoint = "CZopfliPNGSetDefaults", SetLastError = false)]
+            public static partial void CZopfliPNGSetDefaults(out CZopfliPNGOptions pngOptions);
+#else
+            [DllImport("zopflipng.dll", EntryPoint = "CZopfliPNGSetDefaults", ExactSpelling = true, SetLastError = false)]
             public static extern void CZopfliPNGSetDefaults(out CZopfliPNGOptions pngOptions);
-
+#endif  // SUPPORT_LIBRARY_IMPORT
 
             /// <summary>
             /// Re-compress deflated data in PNG with zopfli algorithm.
@@ -37,15 +51,25 @@ namespace ZopfliSharp
             /// <param name="resultPng">Result PNG binary. This data is allocated with malloc in zopflipng.dll and caller of this method have to free the memory.</param>
             /// <param name="resultpngSize">Result PNG binary size.</param>
             /// <returns>Status code. 0 means success, otherwise it means failure.</returns>
-            [DllImport("zopflipng.dll", ExactSpelling = true)]
-            [SuppressUnmanagedCodeSecurity]
-            public static extern int CZopfliPNGOptimize(
-                [In] IntPtr origPng,
-                [In] UIntPtr origpngSize,
+#if SUPPORT_LIBRARY_IMPORT
+            [LibraryImport("zopflipng.dll", EntryPoint = "CZopfliPNGOptimize", SetLastError = false)]
+            public static partial int CZopfliPNGOptimize(
+                IntPtr origPng,
+                UIntPtr origpngSize,
                 in CZopfliPNGOptions pngOptions,
-                [In] bool verbose,
+                [MarshalAs(UnmanagedType.U1)] bool verbose,
                 out MallocedMemoryHandle resultPng,
                 out UIntPtr resultpngSize);
+#else
+            [DllImport("zopflipng.dll", EntryPoint = "CZopfliPNGOptimize", ExactSpelling = true, SetLastError = false)]
+            public static extern int CZopfliPNGOptimize(
+                IntPtr origPng,
+                UIntPtr origpngSize,
+                in CZopfliPNGOptions pngOptions,
+                [MarshalAs(UnmanagedType.U1)] bool verbose,
+                out MallocedMemoryHandle resultPng,
+                out UIntPtr resultpngSize);
+#endif  // SUPPORT_LIBRARY_IMPORT
         }
 
 

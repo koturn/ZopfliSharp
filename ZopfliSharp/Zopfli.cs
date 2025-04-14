@@ -1,3 +1,6 @@
+#if NET7_0_OR_GREATER
+#    define SUPPORT_LIBRARY_IMPORT
+#endif  // NET7_0_OR_GREATER
 using System;
 using System.IO;
 using System.Runtime.CompilerServices;
@@ -12,22 +15,33 @@ namespace ZopfliSharp
     /// <summary>
     /// P/Invoke methods for zopfli.dll.
     /// </summary>
+#if SUPPORT_LIBRARY_IMPORT
+    public static partial class Zopfli
+#else
     public static class Zopfli
+#endif  // SUPPORT_LIBRARY_IMPORT
     {
         /// <summary>
         /// Native methods.
         /// </summary>
         [SuppressUnmanagedCodeSecurity]
+#if SUPPORT_LIBRARY_IMPORT
+        internal static partial class UnsafeNativeMethods
+#else
         internal static class UnsafeNativeMethods
+#endif  // SUPPORT_LIBRARY_IMPORT
         {
             /// <summary>
             /// Get default parameter of <see cref="ZopfliOptions"/>.
             /// </summary>
             /// <param name="options">Destination struct of default values.</param>
-            [DllImport("zopfli.dll", ExactSpelling = true)]
-            [SuppressUnmanagedCodeSecurity]
+#if SUPPORT_LIBRARY_IMPORT
+            [LibraryImport("zopfli.dll", EntryPoint = "ZopfliInitOptions", SetLastError = false)]
+            public static partial void ZopfliInitOptions(out ZopfliOptions options);
+#else
+            [DllImport("zopfli.dll", EntryPoint = "ZopfliInitOptions", ExactSpelling = true, SetLastError = false)]
             public static extern void ZopfliInitOptions(out ZopfliOptions options);
-
+#endif  // SUPPORT_LIBRARY_IMPORT
 
             /// <summary>
             /// Compresses according to the given output format and appends the result to the output.
@@ -38,16 +52,25 @@ namespace ZopfliSharp
             /// <param name="inDataSize">Size of input byte array.</param>
             /// <param name="outData">Pointer to the dynamic output array to which the result is appended. Must be freed after use.</param>
             /// <param name="outDatasize">Pointer to the dynamic output array size</param>
-            [DllImport("zopfli.dll", ExactSpelling = true)]
-            [SuppressUnmanagedCodeSecurity]
-            public static extern void ZopfliCompress(
+#if SUPPORT_LIBRARY_IMPORT
+            [LibraryImport("zopfli.dll", EntryPoint = "ZopfliCompress", SetLastError = false)]
+            public static partial void ZopfliCompress(
                 in ZopfliOptions options,
-                [In] ZopfliFormat outputType,
-                [In] IntPtr inData,
-                [In] UIntPtr inDataSize,
+                ZopfliFormat outputType,
+                IntPtr inData,
+                UIntPtr inDataSize,
                 out MallocedMemoryHandle outData,
                 out UIntPtr outDatasize);
-
+#else
+            [DllImport("zopfli.dll", EntryPoint = "ZopfliCompress", ExactSpelling = true, SetLastError = false)]
+            public static extern void ZopfliCompress(
+                in ZopfliOptions options,
+                ZopfliFormat outputType,
+                IntPtr inData,
+                UIntPtr inDataSize,
+                out MallocedMemoryHandle outData,
+                out UIntPtr outDatasize);
+#endif  // SUPPORT_LIBRARY_IMPORT
 
             /// <summary>
             /// Deflate given data block.
@@ -61,18 +84,31 @@ namespace ZopfliSharp
             /// <param name="bitPointer">Bit position of output data which has been written.</param>
             /// <param name="outData">Pointer to the dynamic output array to which the result is appended. Must be freed after use.</param>
             /// <param name="outDatasize">The dynamic output array size.</param>
-            [DllImport("zopfli.dll", ExactSpelling = true)]
-            [SuppressUnmanagedCodeSecurity]
-            public static extern unsafe void ZopfliDeflatePart(
+#if SUPPORT_LIBRARY_IMPORT
+            [LibraryImport("zopfli.dll", EntryPoint = "ZopfliDeflatePart", SetLastError = false)]
+            public static unsafe partial void ZopfliDeflatePart(
                 in ZopfliOptions options,
                 BlockType blockType,
-                bool isFinal,
-                [In] IntPtr inData,
-                [In] UIntPtr inStart,
-                [In] UIntPtr inEnd,
+                [MarshalAs(UnmanagedType.U1)] bool isFinal,
+                IntPtr inData,
+                UIntPtr inStart,
+                UIntPtr inEnd,
                 ref byte bitPointer,
                 ref MallocedMemoryHandle? outData,
                 ref UIntPtr outDatasize);
+#else
+            [DllImport("zopfli.dll", EntryPoint = "ZopfliDeflatePart", ExactSpelling = true, SetLastError = false)]
+            public static unsafe extern void ZopfliDeflatePart(
+                in ZopfliOptions options,
+                BlockType blockType,
+                [MarshalAs(UnmanagedType.U1)] bool isFinal,
+                IntPtr inData,
+                UIntPtr inStart,
+                UIntPtr inEnd,
+                ref byte bitPointer,
+                ref MallocedMemoryHandle? outData,
+                ref UIntPtr outDatasize);
+#endif  // SUPPORT_LIBRARY_IMPORT
         }
 
 

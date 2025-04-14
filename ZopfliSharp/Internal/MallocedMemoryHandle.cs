@@ -13,7 +13,14 @@ namespace ZopfliSharp.Internal
         /// <summary>
         /// Initialize with null pointer (<see cref="IntPtr.Zero"/>).
         /// </summary>
+#if NET8_0_OR_GREATER
+        /// <remarks>
+        /// <seealso href="https://learn.microsoft.com/en-us/dotnet/core/compatibility/interop/8.0/safehandle-constructor"/>
+        /// </remarks>
+        public MallocedMemoryHandle()
+#else
         internal MallocedMemoryHandle()
+#endif  // NET8_0_OR_GREATER
             : base(true)
         {
             Initialize(0);
