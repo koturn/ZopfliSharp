@@ -79,7 +79,7 @@ namespace ZopfliSharp
         /// <summary>
         /// Cache size of writing data.
         /// </summary>
-        private int _cacheSize;
+        private readonly int _cacheSize;
         /// <summary>
         /// Current write position of <see cref="_buffer"/>.
         /// </summary>
