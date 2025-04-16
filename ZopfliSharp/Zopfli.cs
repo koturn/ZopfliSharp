@@ -759,10 +759,7 @@ namespace ZopfliSharp
                 count -= nWrite;
             } while (!isFinal);
 
-            if (handle != null)
-            {
-                handle.Initialize((ulong)compressedDataSize);
-            }
+            handle?.Initialize((ulong)compressedDataSize);
 
             return handle;
         }
