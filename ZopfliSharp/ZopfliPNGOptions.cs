@@ -115,9 +115,9 @@ namespace ZopfliSharp
         {
             LossyTransparent = lossyTransparent;
             Lossy8bit = lossy8bit;
-            FilterStrategies = filterStrategies ?? new List<ZopfliPNGFilterStrategy>();
+            FilterStrategies = filterStrategies ?? [];
             AutoFilterStrategy = autoFilterStrategy;
-            KeepChunks = keepChunks ?? new List<string>();
+            KeepChunks = keepChunks ?? [];
             UseZopfli = useZopfli;
             NumIterations = numIterations;
             NumIterationsLarge = numIterationsLarge;
@@ -165,7 +165,7 @@ namespace ZopfliSharp
         {
             if (filterStrategiesPointer == IntPtr.Zero || numFilterStrategies == 0)
             {
-                return new List<ZopfliPNGFilterStrategy>();
+                return [];
             }
 
             var filterStrategies = new List<ZopfliPNGFilterStrategy>(numFilterStrategies);
@@ -192,7 +192,7 @@ namespace ZopfliSharp
         {
             if (keepChunksPointer == IntPtr.Zero || numKeepChunks == 0)
             {
-                return new List<string>();
+                return [];
             }
 
             var keepChunks = new List<string>(numKeepChunks);

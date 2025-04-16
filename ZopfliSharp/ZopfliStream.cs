@@ -170,7 +170,7 @@ namespace ZopfliSharp
             _bitPointer = 0;
             _checksum = 0;
             _inflatedSize = 0;
-            _buffer = cacheSize > 0 ? new byte[0] : null;
+            _buffer = cacheSize > 0 ? [] : null;
             _cacheSize = cacheSize;
             _position = 0;
             _totalWrite = 0;

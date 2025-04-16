@@ -55,7 +55,7 @@ namespace ZopfliSharp
             : base(stream, leaveOpen)
         {
             PNGOptions = pngOptions;
-            _buffer = new byte[0];
+            _buffer = [];
             _position = 0;
         }
 
