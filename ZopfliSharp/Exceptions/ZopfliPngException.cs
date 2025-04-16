@@ -68,6 +68,9 @@ namespace ZopfliSharp.Exceptions
         /// </summary>
         /// <param name="info">The object that holds the serialized object data.</param>
         /// <param name="context">The contextual information about the source or destination.</param>
+#if NET8_0_OR_GREATER
+        [Obsolete("This ctor is only for .NET Framework", DiagnosticId = "SYSLIB0051")]
+#endif  // NET8_0_OR_GREATER
         protected ZopfliPngException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
