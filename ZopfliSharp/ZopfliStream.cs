@@ -236,7 +236,7 @@ namespace ZopfliSharp
         /// </summary>
         public override void Flush()
         {
-            if (!(_buffer is null) && _position > 0)
+            if (_buffer is not null && _position > 0)
             {
                 FlushCache(false);
             }
@@ -302,7 +302,7 @@ namespace ZopfliSharp
         private void WriteFinal()
         {
             // Compress the last part of data.
-            if (!(_buffer is null))
+            if (_buffer is not null)
             {
                 FlushCache(true);
             }
