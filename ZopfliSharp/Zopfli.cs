@@ -617,7 +617,6 @@ namespace ZopfliSharp
             {
                 var footerSize = WriteFooter(
                     compressedDataHandle,
-                    (int)compressedDataHandle.ByteLength,
                     format,
                     CalcChecksum(data, offset, count, format),
                     (uint)count);
@@ -676,7 +675,6 @@ namespace ZopfliSharp
             {
                 var footerSize = WriteFooter(
                     compressedDataHandle,
-                    (int)compressedDataHandle.ByteLength,
                     format,
                     CalcChecksum(data, format),
                     (uint)data.Length);
@@ -897,12 +895,11 @@ namespace ZopfliSharp
         /// Write footer of specified format to the unmanaged memory.
         /// </summary>
         /// <param name="handle">Handle of unmanaged memory.</param>
-        /// <param name="offset">Offset of unmanaged memory.</param>
         /// <param name="format">Header format.</param>
         /// <param name="checksum">Value of checksum.</param>
         /// <param name="inflatedSize">Original data size.</param>
         /// <returns>Size of footer.</returns>
-        private static int WriteFooter(MallocedMemoryHandle handle, int offset, ZopfliFormat format, uint checksum, uint inflatedSize)
+        private static int WriteFooter(MallocedMemoryHandle handle, ZopfliFormat format, uint checksum, uint inflatedSize)
         {
             if (format == ZopfliFormat.Deflate)
             {
