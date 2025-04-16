@@ -47,7 +47,7 @@ namespace ZopfliSharp
         /// <para>A flag that must be set to true when writing the last data if the cache is not used.</para>
         /// <para>If false even at the last data write, an extra few bytes are written in the process at the time of the <see cref="Dispose"/> (<see cref="Stream.Close"/>) call.</para>
         /// </summary>
-        public bool IsFinal { get; set; }
+        public bool IsFinal { get; set; } = false;
 
         /// <summary>
         /// Options for Zopfli compression.
@@ -57,7 +57,7 @@ namespace ZopfliSharp
         /// <summary>
         /// Malloced memory handle of compressed data.
         /// </summary>
-        private MallocedMemoryHandle _compressedData;
+        private MallocedMemoryHandle _compressedData = new();
         /// <summary>
         /// Bit pointer of compressed data.
         /// </summary>
@@ -65,7 +65,7 @@ namespace ZopfliSharp
         /// <summary>
         /// Check sum value of CRC-32 or adler32.
         /// </summary>
-        private uint _checksum;
+        private uint _checksum = 0;
         /// <summary>
         /// <para>Total amount of input data size.</para>
         /// <para>This value is only used for GZip footer.</para>
@@ -83,15 +83,15 @@ namespace ZopfliSharp
         /// <summary>
         /// Current write position of <see cref="_buffer"/>.
         /// </summary>
-        private int _position;
+        private int _position = 0;
         /// <summary>
         /// Total number of bytes written to <see cref="ZopfliBaseStream.BaseStream"/>.
         /// </summary>
-        private int _totalWrite;
+        private int _totalWrite = 0;
         /// <summary>
         /// State of writing data.
         /// </summary>
-        private WriteState _writeState;
+        private WriteState _writeState = WriteState.NoDataWritten;
 
 
         /// <summary>
@@ -164,17 +164,9 @@ namespace ZopfliSharp
         {
             Format = format;
             IsWriteImmediately = isWriteImmediately;
-            IsFinal = false;
             _options = options;
-            _compressedData = new MallocedMemoryHandle();
-            _bitPointer = 0;
-            _checksum = 0;
-            _inflatedSize = 0;
             _buffer = cacheSize > 0 ? [] : null;
             _cacheSize = cacheSize;
-            _position = 0;
-            _totalWrite = 0;
-            _writeState = WriteState.NoDataWritten;
         }
 
 
