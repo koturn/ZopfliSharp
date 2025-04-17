@@ -697,8 +697,7 @@ namespace ZopfliSharp
         /// <param name="handle">Handle of unmanaged memory.</param>
         internal static unsafe void DeflatePart(byte[] buffer, int offset, int count, in ZopfliOptions options, BlockType blockType, bool isFinal, ref byte bitPointer, ref MallocedMemoryHandle handle)
         {
-
-            var outDataSize = (UIntPtr)handle.ByteLength;
+            var outDataSize = (nuint)handle.ByteLength;
             fixed (byte* pBuffer = buffer)
             {
                 var p = (IntPtr)pBuffer;
@@ -737,7 +736,7 @@ namespace ZopfliSharp
 
             bool isFinal;
             var bitPointer = (byte)0;
-            var compressedDataSize = handle == null ? UIntPtr.Zero : (UIntPtr)handle.ByteLength;
+            var compressedDataSize = handle == null ? default : (nuint)handle.ByteLength;
             do
             {
                 isFinal = count - masterBlockSize <= 0;
