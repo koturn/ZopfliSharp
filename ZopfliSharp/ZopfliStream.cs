@@ -9,7 +9,19 @@ namespace ZopfliSharp
     /// <summary>
     /// Provides methods and properties used to compressing data.
     /// </summary>
-    public class ZopfliStream : ZopfliBaseStream
+    /// <remarks>
+    /// Primary ctor: Initializes a new instance of the <see cref="ZopfliStream"/> class
+    /// by using the specified stream, options and binary format.
+    /// </remarks>
+    /// <param name="stream">Destination stream</param>
+    /// <param name="options">Options for Zopfli compression.</param>
+    /// <param name="format">Output binary format.</param>
+    /// <param name="cacheSize">The size of the data to be compressed at one time. The write data is cached until it reaches this size.</param>
+    /// <param name="isWriteImmediately">Write intermidiate result data to <see cref="ZopfliBaseStream.BaseStream"/> on each data block compression.</param>
+    /// <param name="leaveOpen">true to leave the stream object open after disposing
+    /// the <see cref="ZopfliStream"/> object; otherwise, false.</param>
+    public class ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, int cacheSize, bool isWriteImmediately, bool leaveOpen = true)
+        : ZopfliBaseStream(stream, leaveOpen)
     {
         /// <summary>
         /// Default cache size (equivalent to master block size).
@@ -38,11 +50,11 @@ namespace ZopfliSharp
         /// <summary>
         /// Output binary format.
         /// </summary>
-        public ZopfliFormat Format { get; set; }
+        public ZopfliFormat Format { get; set; } = format;
         /// <summary>
         /// Write intermidiate result data to <see cref="ZopfliBaseStream.BaseStream"/> on each data block compression.
         /// </summary>
-        public bool IsWriteImmediately { get; set; }
+        public bool IsWriteImmediately { get; set; } = isWriteImmediately;
         /// <summary>
         /// <para>A flag that must be set to true when writing the last data if the cache is not used.</para>
         /// <para>If false even at the last data write, an extra few bytes are written in the process at the time of the <see cref="Dispose"/> (<see cref="Stream.Close"/>) call.</para>
@@ -53,7 +65,7 @@ namespace ZopfliSharp
         /// Options for Zopfli compression.
         /// </summary>
         /// <seealso cref="Options"/>
-        private ZopfliOptions _options;
+        private ZopfliOptions _options = options;
         /// <summary>
         /// Malloced memory handle of compressed data.
         /// </summary>
@@ -75,11 +87,11 @@ namespace ZopfliSharp
         /// <para>Cache of input data.</para>
         /// <para>Length of this byte array is equivalent to master block size.</para>
         /// </summary>
-        private byte[]? _buffer;
+        private byte[]? _buffer = cacheSize > 0 ? [] : null;
         /// <summary>
         /// Cache size of writing data.
         /// </summary>
-        private readonly int _cacheSize;
+        private readonly int _cacheSize = cacheSize;
         /// <summary>
         /// Current write position of <see cref="_buffer"/>.
         /// </summary>
@@ -146,27 +158,6 @@ namespace ZopfliSharp
         public ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, int cacheSize, bool leaveOpen = true)
             : this(stream, options, format, cacheSize, false, leaveOpen)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZopfliStream"/> class
-        /// by using the specified stream, options and binary format.
-        /// </summary>
-        /// <param name="stream">Destination stream</param>
-        /// <param name="options">Options for Zopfli compression.</param>
-        /// <param name="format">Output binary format.</param>
-        /// <param name="cacheSize">The size of the data to be compressed at one time. The write data is cached until it reaches this size.</param>
-        /// <param name="isWriteImmediately">Write intermidiate result data to <see cref="ZopfliBaseStream.BaseStream"/> on each data block compression.</param>
-        /// <param name="leaveOpen">true to leave the stream object open after disposing
-        /// the <see cref="ZopfliStream"/> object; otherwise, false.</param>
-        public ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, int cacheSize, bool isWriteImmediately, bool leaveOpen = true)
-            : base(stream, leaveOpen)
-        {
-            Format = format;
-            IsWriteImmediately = isWriteImmediately;
-            _options = options;
-            _buffer = cacheSize > 0 ? [] : null;
-            _cacheSize = cacheSize;
         }
 
 

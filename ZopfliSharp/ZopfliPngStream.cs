@@ -7,7 +7,15 @@ namespace ZopfliSharp
     /// <summary>
     /// Provides methods and properties used to optimizing PNG data.
     /// </summary>
-    public class ZopfliPngStream : ZopfliBaseStream
+    /// <remarks>
+    /// Primary ctor: Initializes a new instance of the <see cref="ZopfliPngStream"/> class
+    /// by using the specified stream and options.
+    /// </remarks>
+    /// <param name="stream">Destination stream.</param>
+    /// <param name="pngOptions">Options for Zopfli PNG optimization.</param>
+    /// <param name="leaveOpen">true to leave the stream object open after disposing
+    /// the <see cref="ZopfliPngStream"/> object; otherwise, false.</param>
+    public class ZopfliPngStream(Stream stream, ZopfliPNGOptions pngOptions, bool leaveOpen = true) : ZopfliBaseStream(stream, leaveOpen)
     {
         /// <summary>
         /// <para>Initial buffer size.</para>
@@ -19,16 +27,16 @@ namespace ZopfliSharp
         /// Options for PNG optimization.
         /// </summary>
         /// <seealso cref="ZopfliPng.OptimizePng(byte[], int, int, ZopfliPNGOptions, bool)"/>
-        public ZopfliPNGOptions PNGOptions { get; set; }
+        public ZopfliPNGOptions PNGOptions { get; set; } = pngOptions;
 
         /// <summary>
         /// Buffer for reading <see cref="ZopfliBaseStream.BaseStream"/>.
         /// </summary>
-        private byte[] _buffer;
+        private byte[] _buffer = [];
         /// <summary>
         /// Write postion of <see cref="_buffer"/>.
         /// </summary>
-        private int _position;
+        private int _position = 0;
 
 
         /// <summary>
@@ -41,22 +49,6 @@ namespace ZopfliSharp
         public ZopfliPngStream(Stream stream, bool leaveOpen = true)
             : this(stream, ZopfliPNGOptions.GetDefault(), leaveOpen)
         {
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="ZopfliPngStream"/> class
-        /// by using the specified stream and options.
-        /// </summary>
-        /// <param name="stream">Destination stream.</param>
-        /// <param name="pngOptions">Options for Zopfli PNG optimization.</param>
-        /// <param name="leaveOpen">true to leave the stream object open after disposing
-        /// the <see cref="ZopfliPngStream"/> object; otherwise, false.</param>
-        public ZopfliPngStream(Stream stream, ZopfliPNGOptions pngOptions, bool leaveOpen = true)
-            : base(stream, leaveOpen)
-        {
-            PNGOptions = pngOptions;
-            _buffer = [];
-            _position = 0;
         }
 
 

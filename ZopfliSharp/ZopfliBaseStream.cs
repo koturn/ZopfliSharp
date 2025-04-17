@@ -7,7 +7,14 @@ namespace ZopfliSharp
     /// <summary>
     /// A super class of <see cref="ZopfliStream"/> and <see cref="ZopfliPngStream"/>.
     /// </summary>
-    public abstract class ZopfliBaseStream : Stream
+    /// <remarks>
+    /// Initialize all members.
+    /// </remarks>
+    /// <param name="stream">Destination stream.</param>
+    /// <param name="leaveOpen">true to leave the stream object open after disposing
+    /// the <see cref="ZopfliBaseStream"/> object; otherwise, false.</param>
+    public abstract class ZopfliBaseStream(Stream stream, bool leaveOpen = true)
+        : Stream
     {
         /// <summary>
         /// <para>Gets a value indicating whether the current stream supports reading.</para>
@@ -42,29 +49,18 @@ namespace ZopfliSharp
         /// <summary>
         /// Destination stream.
         /// </summary>
-        public Stream BaseStream { get; private set; }
+        public Stream BaseStream { get; private set; } = stream;
         /// <summary>
         /// true if the application would like the base stream to remain open
         /// after <see cref="Stream.Close()"/> or <see cref="Stream.Dispose()"/> this stream.
         /// </summary>
-        public bool LeaveOpen { get; }
+        public bool LeaveOpen { get; } = leaveOpen;
 
         /// <summary>
         /// A value indicating whether the current stream supports writing.
         /// </summary>
         /// <seealso cref="CanWrite"/>
-        private bool _canWrite;
-
-
-        /// <summary>
-        /// Initialize all members.
-        /// </summary>
-        protected ZopfliBaseStream(Stream stream, bool leaveOpen = true)
-        {
-            BaseStream = stream;
-            LeaveOpen = leaveOpen;
-            _canWrite = true;
-        }
+        private bool _canWrite = true;
 
 
         /// <summary>
