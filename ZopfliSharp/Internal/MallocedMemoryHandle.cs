@@ -10,15 +10,18 @@ namespace ZopfliSharp.Internal
     /// </summary>
     internal sealed class MallocedMemoryHandle : SafeBuffer
     {
+#if NET8_0_OR_GREATER
         /// <summary>
         /// Initialize with null pointer (<see cref="IntPtr.Zero"/>).
         /// </summary>
-#if NET8_0_OR_GREATER
         /// <remarks>
         /// <seealso href="https://learn.microsoft.com/en-us/dotnet/core/compatibility/interop/8.0/safehandle-constructor"/>
         /// </remarks>
         public MallocedMemoryHandle()
 #else
+        /// <summary>
+        /// Initialize with null pointer (<see cref="IntPtr.Zero"/>).
+        /// </summary>
         internal MallocedMemoryHandle()
 #endif  // NET8_0_OR_GREATER
             : base(true)
