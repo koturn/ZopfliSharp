@@ -9,8 +9,14 @@ A P/Invoke library for [google/zopfli](https://github.com/google/zopfli "google/
 ## Build
 
 ```shell
-> msbuild /nologo /m /t:restore /p:Configuration=Release;Platform="Any CPU" ZopfliSharp.sln
-> msbuild /nologo /m /p:Configuration=Release;Platform="Any CPU" ZopfliSharp.sln
+> nmake restore
+> nmake
+```
+
+## Deploy
+
+```shell
+> nmake deploy
 ```
 
 

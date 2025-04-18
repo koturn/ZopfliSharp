@@ -1,22 +1,19 @@
 version: 1.0.{build}
-image: Visual Studio 2019
+image: Visual Studio 2022
 install:
-- cmd: '"C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Auxiliary\Build\vcvars64.bat"'
+- cmd: >-
+    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat"
+
+    nmake restore
 build_script:
 - cmd: >-
-    msbuild /nologo /m /t:restore /p:Configuration=Release;Platform="Any CPU" ZopfliSharp.sln
+    nmake
 
-    msbuild /nologo /m /p:Configuration=Release;Platform="Any CPU" ZopfliSharp.sln
-
-    mkdir Artifacts\ZopfliSharp
-
-    copy ZopfliSharp\bin\Release\netstandard2.0\ZopfliSharp.dll Artifacts\ZopfliSharp\
-
-    copy ZopfliSharp\bin\Release\netstandard2.0\ZopfliSharp.pdb Artifacts\ZopfliSharp\
-
-    cd Artifacts
-
-    7z a -mx=9 -r ZopfliSharp.zip ZopfliSharp\
+    nmake deploy
 artifacts:
-- path: Artifacts\ZopfliSharp.zip
-  name: ZopfliSharp
+- path: ZopfliSharp-netstandard2.0.zip
+  name: ZopfliSharp-netstandard2.0
+- path: ZopfliSharp-net8.0.zip
+  name: ZopfliSharp-net8.0.zip
+- path: ZopfliSharp-net9.0.zip
+  name: ZopfliSharp-net9.0
