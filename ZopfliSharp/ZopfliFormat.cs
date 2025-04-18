@@ -1,4 +1,4 @@
-﻿namespace ZopfliSharp
+namespace ZopfliSharp
 {
     /// <summary>
     /// Output binary format types.

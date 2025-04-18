@@ -1,4 +1,4 @@
-﻿namespace ZopfliSharp
+namespace ZopfliSharp
 {
     /// <summary>
     /// Block type of compressed data.
