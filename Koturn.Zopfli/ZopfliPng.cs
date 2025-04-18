@@ -24,9 +24,9 @@ namespace Koturn.Zopfli
         /// </summary>
         [SuppressUnmanagedCodeSecurity]
 #if SUPPORT_LIBRARY_IMPORT
-        internal static partial class UnsafeNativeMethods
+        internal static partial class SafeNativeMethods
 #else
-        internal static class UnsafeNativeMethods
+        internal static class SafeNativeMethods
 #endif  // SUPPORT_LIBRARY_IMPORT
         {
             /// <summary>
@@ -315,7 +315,7 @@ namespace Koturn.Zopfli
             {
                 fixed (byte* pPngData = &pngData[offset])
                 {
-                    error = UnsafeNativeMethods.CZopfliPngOptimize(
+                    error = SafeNativeMethods.CZopfliPngOptimize(
                         (IntPtr)pPngData,
                         (UIntPtr)count,
                         cPngOptions,
@@ -353,7 +353,7 @@ namespace Koturn.Zopfli
             {
                 fixed (byte* pPngData = pngData)
                 {
-                    error = UnsafeNativeMethods.CZopfliPngOptimize(
+                    error = SafeNativeMethods.CZopfliPngOptimize(
                         (IntPtr)pPngData,
                         (UIntPtr)pngData.Length,
                         cPngOptions,

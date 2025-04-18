@@ -9,8 +9,8 @@ namespace Koturn.Zopfli
     /// <para>Option value for zopflipng.</para>
     /// <para>This structure is used to interact with zopfli.dll.</para>
     /// </summary>
-    /// <seealso cref="Zopfli.UnsafeNativeMethods.ZopfliInitOptions(out ZopfliOptions)"/>
-    /// <seealso cref="Zopfli.UnsafeNativeMethods.ZopfliCompress(in ZopfliOptions, ZopfliFormat, IntPtr, UIntPtr, out Internal.MallocedMemoryHandle, out UIntPtr)"/>
+    /// <seealso cref="Zopfli.SafeNativeMethods.ZopfliInitOptions(out ZopfliOptions)"/>
+    /// <seealso cref="Zopfli.SafeNativeMethods.ZopfliCompress(in ZopfliOptions, ZopfliFormat, IntPtr, UIntPtr, out Internal.MallocedMemoryHandle, out UIntPtr)"/>
     [StructLayout(LayoutKind.Sequential)]
     public struct ZopfliOptions
     {
@@ -50,7 +50,7 @@ namespace Koturn.Zopfli
         /// <returns>Default option value.</returns>
         public static ZopfliOptions GetDefault()
         {
-            Zopfli.UnsafeNativeMethods.ZopfliInitOptions(out var options);
+            Zopfli.SafeNativeMethods.ZopfliInitOptions(out var options);
             return options;
         }
     }

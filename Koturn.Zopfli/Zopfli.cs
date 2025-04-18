@@ -27,9 +27,9 @@ namespace Koturn.Zopfli
         /// </summary>
         [SuppressUnmanagedCodeSecurity]
 #if SUPPORT_LIBRARY_IMPORT
-        internal static partial class UnsafeNativeMethods
+        internal static partial class SafeNativeMethods
 #else
-        internal static class UnsafeNativeMethods
+        internal static class SafeNativeMethods
 #endif  // SUPPORT_LIBRARY_IMPORT
         {
             /// <summary>
@@ -317,7 +317,7 @@ namespace Koturn.Zopfli
             {
                 fixed (byte* pData = &data[offset])
                 {
-                    UnsafeNativeMethods.ZopfliCompress(
+                    SafeNativeMethods.ZopfliCompress(
                         options,
                         format,
                         (IntPtr)pData,
@@ -359,7 +359,7 @@ namespace Koturn.Zopfli
             {
                 fixed (byte* pData = data)
                 {
-                    UnsafeNativeMethods.ZopfliCompress(
+                    SafeNativeMethods.ZopfliCompress(
                         options,
                         format,
                         (IntPtr)pData,
@@ -702,7 +702,7 @@ namespace Koturn.Zopfli
             fixed (byte* pBuffer = buffer)
             {
                 var p = (IntPtr)pBuffer;
-                UnsafeNativeMethods.ZopfliDeflatePart(
+                SafeNativeMethods.ZopfliDeflatePart(
                     options,
                     blockType,
                     isFinal,
@@ -743,7 +743,7 @@ namespace Koturn.Zopfli
                 isFinal = count - masterBlockSize <= 0;
                 var nWrite = isFinal ? count : masterBlockSize;
 
-                UnsafeNativeMethods.ZopfliDeflatePart(
+                SafeNativeMethods.ZopfliDeflatePart(
                     options,
                     blockType,
                     isFinal,
