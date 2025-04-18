@@ -1,7 +1,7 @@
-ZopfliSharp
-===========
+Koturn.Zopfli
+=============
 
-[![Test status](https://ci.appveyor.com/api/projects/status/wkt98fd86l4v9xlt/branch/main?svg=true)](https://ci.appveyor.com/project/koturn/zopflisharp "AppVeyor | koturn/ZopfliSharp")
+[![Test status](https://ci.appveyor.com/api/projects/status/wkt98fd86l4v9xlt/branch/main?svg=true)](https://ci.appveyor.com/project/koturn/koturn.zopfli "AppVeyor | koturn/Koturn.Zopfli")
 
 A P/Invoke library for [google/zopfli](https://github.com/google/zopfli "google/zopfli") (zopfli.dll and zopflipng.dll).
 

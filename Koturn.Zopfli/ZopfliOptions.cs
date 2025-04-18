@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 
 
-namespace ZopfliSharp
+namespace Koturn.Zopfli
 {
     /// <summary>
     /// <para>Option value for zopflipng.</para>

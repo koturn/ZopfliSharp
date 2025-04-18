@@ -1,4 +1,4 @@
-namespace ZopfliSharp
+namespace Koturn.Zopfli
 {
     /// <summary>
     /// Enum forzopflipng strategy.

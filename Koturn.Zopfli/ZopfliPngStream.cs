@@ -2,7 +2,7 @@ using System;
 using System.IO;
 
 
-namespace ZopfliSharp
+namespace Koturn.Zopfli
 {
     /// <summary>
     /// Provides methods and properties used to optimizing PNG data.

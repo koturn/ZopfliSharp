@@ -1,4 +1,4 @@
-namespace ZopfliSharp
+namespace Koturn.Zopfli
 {
     /// <summary>
     /// Output binary format types.

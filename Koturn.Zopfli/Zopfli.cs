@@ -6,11 +6,11 @@ using System.IO;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
-using ZopfliSharp.Checksums;
-using ZopfliSharp.Internal;
+using Koturn.Zopfli.Checksums;
+using Koturn.Zopfli.Internal;
 
 
-namespace ZopfliSharp
+namespace Koturn.Zopfli
 {
     /// <summary>
     /// P/Invoke methods for zopfli.dll.

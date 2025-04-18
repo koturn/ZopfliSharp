@@ -1,10 +1,10 @@
 using System;
 using System.IO;
-using ZopfliSharp.Checksums;
-using ZopfliSharp.Internal;
+using Koturn.Zopfli.Checksums;
+using Koturn.Zopfli.Internal;
 
 
-namespace ZopfliSharp
+namespace Koturn.Zopfli
 {
     /// <summary>
     /// Provides methods and properties used to compressing data.

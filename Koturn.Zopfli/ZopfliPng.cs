@@ -4,11 +4,11 @@
 using System;
 using System.Runtime.InteropServices;
 using System.Security;
-using ZopfliSharp.Exceptions;
-using ZopfliSharp.Internal;
+using Koturn.Zopfli.Exceptions;
+using Koturn.Zopfli.Internal;
 
 
-namespace ZopfliSharp
+namespace Koturn.Zopfli
 {
     /// <summary>
     /// P/Invoke methods for zopflipng.dll.

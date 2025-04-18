@@ -6,7 +6,7 @@ using System.Runtime.Intrinsics.X86;
 #endif  // NETCOREAPP3_0_OR_GREATER
 
 
-namespace ZopfliSharp.Checksums
+namespace Koturn.Zopfli.Checksums
 {
     /// <summary>
     /// CRC-32 calculation class.

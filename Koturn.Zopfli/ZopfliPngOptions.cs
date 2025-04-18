@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using ZopfliSharp.Internal;
+using Koturn.Zopfli.Internal;
 
 
-namespace ZopfliSharp
+namespace Koturn.Zopfli
 {
     /// <summary>
     /// Structure of options for zopflipng.

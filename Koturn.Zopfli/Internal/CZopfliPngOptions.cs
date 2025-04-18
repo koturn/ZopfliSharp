@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 
 
-namespace ZopfliSharp.Internal
+namespace Koturn.Zopfli.Internal
 {
     /// <summary>
     /// <para>Option value for zopflipng.</para>

@@ -2,7 +2,7 @@ using System;
 using System.Runtime.Serialization;
 
 
-namespace ZopfliSharp.Exceptions
+namespace Koturn.Zopfli.Exceptions
 {
     /// <summary>
     /// Represents errors that occur during zopfli compression.

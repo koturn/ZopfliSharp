@@ -2,7 +2,7 @@ using System;
 using System.Runtime.InteropServices;
 
 
-namespace ZopfliSharp.Internal
+namespace Koturn.Zopfli.Internal
 {
     /// <summary>
     /// <para><see cref="SafeBuffer"/> for malloced memory.</para>
