@@ -46,10 +46,12 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Allow altering hidden colors of fully transparent pixels.
         /// </summary>
+        [field: MarshalAs(UnmanagedType.Bool)]
         public bool LossyTransparent { get; set; }
         /// <summary>
         /// Convert 16-bit per channel images to 8-bit per channel.
         /// </summary>
+        [field: MarshalAs(UnmanagedType.Bool)]
         public bool Lossy8bit { get; set; }
         /// <summary>
         /// Filter strategies to try.
@@ -62,6 +64,7 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Automatically choose filter strategy using less good compression.
         /// </summary>
+        [field: MarshalAs(UnmanagedType.Bool)]
         public bool AutoFilterStrategy { get; set; }
         /// <summary>
         /// <para>PNG chunks to keep</para>
@@ -75,6 +78,7 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Use Zopfli deflate compression.
         /// </summary>
+        [field: MarshalAs(UnmanagedType.Bool)]
         public bool UseZopfli { get; set; }
         /// <summary>
         /// Zopfli number of iterations.
