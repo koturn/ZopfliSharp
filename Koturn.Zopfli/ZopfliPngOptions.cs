@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Koturn.Zopfli.Enums;
 using Koturn.Zopfli.Internal;
 
 

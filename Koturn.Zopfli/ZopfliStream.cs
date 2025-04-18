@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using Koturn.Zopfli.Checksums;
+using Koturn.Zopfli.Enums;
 using Koturn.Zopfli.Internal;
 
 
