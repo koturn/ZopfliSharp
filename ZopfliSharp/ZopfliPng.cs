@@ -30,15 +30,15 @@ namespace ZopfliSharp
 #endif  // SUPPORT_LIBRARY_IMPORT
         {
             /// <summary>
-            /// Get default parameter of <see cref="ZopfliPNGOptions"/>.
+            /// Get default parameter of <see cref="ZopfliPngOptions"/>.
             /// </summary>
             /// <param name="pngOptions">Options struct for ZopfliPNG.</param>
 #if SUPPORT_LIBRARY_IMPORT
             [LibraryImport("zopflipng", EntryPoint = "CZopfliPNGSetDefaults", SetLastError = false)]
-            public static partial void CZopfliPNGSetDefaults(out CZopfliPNGOptions pngOptions);
+            public static partial void CZopfliPngSetDefaults(out CZopfliPngOptions pngOptions);
 #else
             [DllImport("zopflipng", EntryPoint = "CZopfliPNGSetDefaults", ExactSpelling = true, SetLastError = false)]
-            public static extern void CZopfliPNGSetDefaults(out CZopfliPNGOptions pngOptions);
+            public static extern void CZopfliPngSetDefaults(out CZopfliPngOptions pngOptions);
 #endif  // SUPPORT_LIBRARY_IMPORT
 
             /// <summary>
@@ -53,19 +53,19 @@ namespace ZopfliSharp
             /// <returns>Status code. 0 means success, otherwise it means failure.</returns>
 #if SUPPORT_LIBRARY_IMPORT
             [LibraryImport("zopflipng", EntryPoint = "CZopfliPNGOptimize", SetLastError = false)]
-            public static partial int CZopfliPNGOptimize(
+            public static partial int CZopfliPngOptimize(
                 IntPtr origPng,
                 UIntPtr origpngSize,
-                in CZopfliPNGOptions pngOptions,
+                in CZopfliPngOptions pngOptions,
                 [MarshalAs(UnmanagedType.U1)] bool verbose,
                 out MallocedMemoryHandle resultPng,
                 out UIntPtr resultpngSize);
 #else
             [DllImport("zopflipng", EntryPoint = "CZopfliPNGOptimize", ExactSpelling = true, SetLastError = false)]
-            public static extern int CZopfliPNGOptimize(
+            public static extern int CZopfliPngOptimize(
                 IntPtr origPng,
                 UIntPtr origpngSize,
-                in CZopfliPNGOptions pngOptions,
+                in CZopfliPngOptions pngOptions,
                 [MarshalAs(UnmanagedType.U1)] bool verbose,
                 out MallocedMemoryHandle resultPng,
                 out UIntPtr resultpngSize);
@@ -95,7 +95,7 @@ namespace ZopfliSharp
         /// <returns>Result PNG binary.</returns>
         public static byte[] OptimizePng(byte[] pngData, int offset, int count, bool verbose = false)
         {
-            using (var cPngOptions = CZopfliPNGOptions.GetDefault())
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
             {
                 return OptimizePng(pngData, offset, count, cPngOptions, verbose);
             }
@@ -109,7 +109,7 @@ namespace ZopfliSharp
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(byte[] pngData, ZopfliPNGOptions pngOptions, bool verbose = false)
+        public static byte[] OptimizePng(byte[] pngData, ZopfliPngOptions pngOptions, bool verbose = false)
         {
             return OptimizePng(pngData, 0, pngData.Length, pngOptions, verbose);
         }
@@ -124,9 +124,9 @@ namespace ZopfliSharp
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(byte[] pngData, int offset, int count, ZopfliPNGOptions pngOptions, bool verbose = false)
+        public static byte[] OptimizePng(byte[] pngData, int offset, int count, ZopfliPngOptions pngOptions, bool verbose = false)
         {
-            using (var cPngOptions = new CZopfliPNGOptions(pngOptions))
+            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
             {
                 return OptimizePng(pngData, offset, count, cPngOptions, verbose);
             }
@@ -141,7 +141,7 @@ namespace ZopfliSharp
         /// <returns>Result PNG binary.</returns>
         public static byte[] OptimizePng(ReadOnlySpan<byte> pngData, bool verbose = false)
         {
-            using (var cPngOptions =  CZopfliPNGOptions.GetDefault())
+            using (var cPngOptions =  CZopfliPngOptions.GetDefault())
             {
                 return OptimizePng(pngData, cPngOptions, verbose);
             }
@@ -155,9 +155,9 @@ namespace ZopfliSharp
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(ReadOnlySpan<byte> pngData, ZopfliPNGOptions pngOptions, bool verbose = false)
+        public static byte[] OptimizePng(ReadOnlySpan<byte> pngData, ZopfliPngOptions pngOptions, bool verbose = false)
         {
-            using (var cPngOptions = new CZopfliPNGOptions(pngOptions))
+            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
             {
                 return OptimizePng(pngData, cPngOptions, verbose);
             }
@@ -174,7 +174,7 @@ namespace ZopfliSharp
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
         /// <exception cref="ZopfliPngException">Thrown when failed to optimize PNG data.</exception>
-        internal static byte[] OptimizePng(byte[] pngData, int offset, int count, in CZopfliPNGOptions cPngOptions, bool verbose = false)
+        internal static byte[] OptimizePng(byte[] pngData, int offset, int count, in CZopfliPngOptions cPngOptions, bool verbose = false)
         {
             using (var resultPngHandle = OptimizePngUnmanaged(pngData, offset, count, in cPngOptions, verbose))
             {
@@ -193,7 +193,7 @@ namespace ZopfliSharp
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
         /// <exception cref="ZopfliPngException">Thrown when failed to optimize PNG data.</exception>
-        internal static byte[] OptimizePng(ReadOnlySpan<byte> pngData, in CZopfliPNGOptions cPngOptions, bool verbose = false)
+        internal static byte[] OptimizePng(ReadOnlySpan<byte> pngData, in CZopfliPngOptions cPngOptions, bool verbose = false)
         {
             using (var resultPngHandle = OptimizePngUnmanaged(pngData, in cPngOptions, verbose))
             {
@@ -226,7 +226,7 @@ namespace ZopfliSharp
         /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
         public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, bool verbose = false)
         {
-            using (var cPngOptions = CZopfliPNGOptions.GetDefault())
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
             {
                 return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, verbose);
             }
@@ -240,7 +240,7 @@ namespace ZopfliSharp
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
-        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, ZopfliPNGOptions pngOptions, bool verbose = false)
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, ZopfliPngOptions pngOptions, bool verbose = false)
         {
             return OptimizePngUnmanaged(pngData, 0, pngData.Length, pngOptions, verbose);
         }
@@ -255,9 +255,9 @@ namespace ZopfliSharp
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
-        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, ZopfliPNGOptions pngOptions, bool verbose = false)
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, ZopfliPngOptions pngOptions, bool verbose = false)
         {
-            using (var cPngOptions = new CZopfliPNGOptions(pngOptions))
+            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
             {
                 return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, verbose);
             }
@@ -272,7 +272,7 @@ namespace ZopfliSharp
         /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
         public static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, bool verbose = false)
         {
-            using (var cPngOptions = CZopfliPNGOptions.GetDefault())
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
             {
                 return OptimizePngUnmanaged(pngData, cPngOptions, verbose);
             }
@@ -286,9 +286,9 @@ namespace ZopfliSharp
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
-        public static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, ZopfliPNGOptions pngOptions, bool verbose = false)
+        public static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, ZopfliPngOptions pngOptions, bool verbose = false)
         {
-            using (var cPngOptions = new CZopfliPNGOptions(pngOptions))
+            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
             {
                 return OptimizePngUnmanaged(pngData, cPngOptions, verbose);
             }
@@ -305,7 +305,7 @@ namespace ZopfliSharp
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
         /// <exception cref="ZopfliPngException">Thrown when failed to optimize PNG data.</exception>
-        internal static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, in CZopfliPNGOptions cPngOptions, bool verbose = false)
+        internal static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, in CZopfliPngOptions cPngOptions, bool verbose = false)
         {
             int error;
             MallocedMemoryHandle resultPngHandle;
@@ -315,7 +315,7 @@ namespace ZopfliSharp
             {
                 fixed (byte* pPngData = &pngData[offset])
                 {
-                    error = UnsafeNativeMethods.CZopfliPNGOptimize(
+                    error = UnsafeNativeMethods.CZopfliPngOptimize(
                         (IntPtr)pPngData,
                         (UIntPtr)count,
                         cPngOptions,
@@ -343,7 +343,7 @@ namespace ZopfliSharp
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
         /// <exception cref="ZopfliPngException">Thrown when failed to optimize PNG data.</exception>
-        internal static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, in CZopfliPNGOptions cPngOptions, bool verbose = false)
+        internal static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, in CZopfliPngOptions cPngOptions, bool verbose = false)
         {
             int error;
             MallocedMemoryHandle resultPngHandle;
@@ -353,7 +353,7 @@ namespace ZopfliSharp
             {
                 fixed (byte* pPngData = pngData)
                 {
-                    error = UnsafeNativeMethods.CZopfliPNGOptimize(
+                    error = UnsafeNativeMethods.CZopfliPngOptimize(
                         (IntPtr)pPngData,
                         (UIntPtr)pngData.Length,
                         cPngOptions,

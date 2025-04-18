@@ -15,7 +15,7 @@ namespace ZopfliSharp
     /// <param name="pngOptions">Options for Zopfli PNG optimization.</param>
     /// <param name="leaveOpen">true to leave the stream object open after disposing
     /// the <see cref="ZopfliPngStream"/> object; otherwise, false.</param>
-    public class ZopfliPngStream(Stream stream, ZopfliPNGOptions pngOptions, bool leaveOpen = true) : ZopfliBaseStream(stream, leaveOpen)
+    public class ZopfliPngStream(Stream stream, ZopfliPngOptions pngOptions, bool leaveOpen = true) : ZopfliBaseStream(stream, leaveOpen)
     {
         /// <summary>
         /// <para>Initial buffer size.</para>
@@ -26,8 +26,8 @@ namespace ZopfliSharp
         /// <summary>
         /// Options for PNG optimization.
         /// </summary>
-        /// <seealso cref="ZopfliPng.OptimizePng(byte[], int, int, ZopfliPNGOptions, bool)"/>
-        public ZopfliPNGOptions PNGOptions { get; set; } = pngOptions;
+        /// <seealso cref="ZopfliPng.OptimizePng(byte[], int, int, ZopfliPngOptions, bool)"/>
+        public ZopfliPngOptions PNGOptions { get; set; } = pngOptions;
 
         /// <summary>
         /// Buffer for reading <see cref="ZopfliBaseStream.BaseStream"/>.
@@ -47,7 +47,7 @@ namespace ZopfliSharp
         /// <param name="leaveOpen">true to leave the stream object open after disposing
         /// the <see cref="ZopfliPngStream"/> object; otherwise, false.</param>
         public ZopfliPngStream(Stream stream, bool leaveOpen = true)
-            : this(stream, ZopfliPNGOptions.GetDefault(), leaveOpen)
+            : this(stream, ZopfliPngOptions.GetDefault(), leaveOpen)
         {
         }
 

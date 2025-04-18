@@ -19,40 +19,40 @@ namespace ZopfliSharp
     /// <param name="useZopfli">Use Zopfli deflate compression.</param>
     /// <param name="numIterations">Zopfli number of iterations.</param>
     /// <param name="numIterationsLarge">Zopfli number of iterations on large images.</param>
-    public class ZopfliPNGOptions(
-        bool lossyTransparent = ZopfliPNGOptions.DefaultLossyTransparent,
-        bool lossy8bit = ZopfliPNGOptions.DefaultLossy8bit,
-        List<ZopfliPNGFilterStrategy>? filterStrategies = null,
-        bool autoFilterStrategy = ZopfliPNGOptions.DefaultAutoFilterStrategy,
+    public class ZopfliPngOptions(
+        bool lossyTransparent = ZopfliPngOptions.DefaultLossyTransparent,
+        bool lossy8bit = ZopfliPngOptions.DefaultLossy8bit,
+        List<ZopfliPngFilterStrategy>? filterStrategies = null,
+        bool autoFilterStrategy = ZopfliPngOptions.DefaultAutoFilterStrategy,
         List<string>? keepChunks = null,
-        bool useZopfli = ZopfliPNGOptions.DefaultUseZopfli,
-        int numIterations = ZopfliPNGOptions.DefaultNumIterations,
-        int numIterationsLarge = ZopfliPNGOptions.DefaultNumIterationsLarge)
+        bool useZopfli = ZopfliPngOptions.DefaultUseZopfli,
+        int numIterations = ZopfliPngOptions.DefaultNumIterations,
+        int numIterationsLarge = ZopfliPngOptions.DefaultNumIterationsLarge)
     {
         /// <summary>
         /// Default value for <see cref="LossyTransparent"/>.
         /// </summary>
-        public const bool DefaultLossyTransparent = CZopfliPNGOptions.DefaultLossyTransparent;
+        public const bool DefaultLossyTransparent = CZopfliPngOptions.DefaultLossyTransparent;
         /// <summary>
         /// Default value for <see cref="Lossy8bit"/>.
         /// </summary>
-        public const bool DefaultLossy8bit = CZopfliPNGOptions.DefaultLossy8bit;
+        public const bool DefaultLossy8bit = CZopfliPngOptions.DefaultLossy8bit;
         /// <summary>
         /// Default value for <see cref="AutoFilterStrategy"/>.
         /// </summary>
-        public const bool DefaultAutoFilterStrategy = CZopfliPNGOptions.DefaultAutoFilterStrategy;
+        public const bool DefaultAutoFilterStrategy = CZopfliPngOptions.DefaultAutoFilterStrategy;
         /// <summary>
         /// Default value for <see cref="UseZopfli"/>.
         /// </summary>
-        public const bool DefaultUseZopfli = CZopfliPNGOptions.DefaultUseZopfli;
+        public const bool DefaultUseZopfli = CZopfliPngOptions.DefaultUseZopfli;
         /// <summary>
         /// Default value for <see cref="NumIterations"/>.
         /// </summary>
-        public const int DefaultNumIterations = CZopfliPNGOptions.DefaultNumIterations;
+        public const int DefaultNumIterations = CZopfliPngOptions.DefaultNumIterations;
         /// <summary>
         /// Default value for <see cref="NumIterationsLarge"/>.
         /// </summary>
-        public const int DefaultNumIterationsLarge = CZopfliPNGOptions.DefaultNumIterationsLarge;
+        public const int DefaultNumIterationsLarge = CZopfliPngOptions.DefaultNumIterationsLarge;
 
 
         /// <summary>
@@ -66,7 +66,7 @@ namespace ZopfliSharp
         /// <summary>
         /// Filter strategies to try.
         /// </summary>
-        public List<ZopfliPNGFilterStrategy> FilterStrategies { get; } = filterStrategies ?? [];
+        public List<ZopfliPngFilterStrategy> FilterStrategies { get; } = filterStrategies ?? [];
         /// <summary>
         /// Automatically choose filter strategy using less good compression.
         /// </summary>
@@ -99,7 +99,7 @@ namespace ZopfliSharp
         /// <param name="useZopfli">Use Zopfli deflate compression.</param>
         /// <param name="numIterations">Zopfli number of iterations.</param>
         /// <param name="numIterationsLarge">Zopfli number of iterations on large images.</param>
-        public ZopfliPNGOptions(
+        public ZopfliPngOptions(
             bool lossyTransparent = DefaultLossyTransparent,
             bool lossy8bit = DefaultLossy8bit,
             bool autoFilterStrategy = DefaultAutoFilterStrategy,
@@ -112,10 +112,10 @@ namespace ZopfliSharp
 
 
         /// <summary>
-        /// Create option instance from <see cref="CZopfliPNGOptions"/>.
+        /// Create option instance from <see cref="CZopfliPngOptions"/>.
         /// </summary>
         /// <param name="cPngOptions">Allow altering hidden colors of fully transparent pixels.</param>
-        internal ZopfliPNGOptions(in CZopfliPNGOptions cPngOptions)
+        internal ZopfliPngOptions(in CZopfliPngOptions cPngOptions)
             : this(
                 cPngOptions.LossyTransparent,
                 cPngOptions.Lossy8bit,
@@ -133,32 +133,32 @@ namespace ZopfliSharp
         /// Get default option value from zopflipng.dll.
         /// </summary>
         /// <returns>Default option value.</returns>
-        public static ZopfliPNGOptions GetDefault()
+        public static ZopfliPngOptions GetDefault()
         {
-            using (var cPngOptions = CZopfliPNGOptions.GetDefault())
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
             {
-                return new ZopfliPNGOptions(cPngOptions);
+                return new ZopfliPngOptions(cPngOptions);
             }
         }
 
 
         /// <summary>
-        /// Create filter strategy list from unmanaged memory in <see cref="CZopfliPNGOptions"/>.
+        /// Create filter strategy list from unmanaged memory in <see cref="CZopfliPngOptions"/>.
         /// </summary>
-        /// <param name="filterStrategiesPointer">Unmanaged memory pointer to filter strategies. (<see cref="CZopfliPNGOptions.FilterStrategiesPointer"/>)</param>
-        /// <param name="numFilterStrategies">Number of filter strategies. (Unmanaged memory pointer of <see cref="CZopfliPNGOptions.NumFilterStrategies"/>)</param>
+        /// <param name="filterStrategiesPointer">Unmanaged memory pointer to filter strategies. (<see cref="CZopfliPngOptions.FilterStrategiesPointer"/>)</param>
+        /// <param name="numFilterStrategies">Number of filter strategies. (Unmanaged memory pointer of <see cref="CZopfliPngOptions.NumFilterStrategies"/>)</param>
         /// <returns>Created filter strategy list.</returns>
-        private static List<ZopfliPNGFilterStrategy> CreateFilterStrategies(IntPtr filterStrategiesPointer, int numFilterStrategies)
+        private static List<ZopfliPngFilterStrategy> CreateFilterStrategies(IntPtr filterStrategiesPointer, int numFilterStrategies)
         {
             if (filterStrategiesPointer == IntPtr.Zero || numFilterStrategies == 0)
             {
                 return [];
             }
 
-            var filterStrategies = new List<ZopfliPNGFilterStrategy>(numFilterStrategies);
+            var filterStrategies = new List<ZopfliPngFilterStrategy>(numFilterStrategies);
             unsafe
             {
-                var pFilterStrategies = (ZopfliPNGFilterStrategy*)filterStrategiesPointer;
+                var pFilterStrategies = (ZopfliPngFilterStrategy*)filterStrategiesPointer;
                 for (int i = 0; i < numFilterStrategies; i++)
                 {
                     filterStrategies.Add(pFilterStrategies[i]);
@@ -170,10 +170,10 @@ namespace ZopfliSharp
 
 
         /// <summary>
-        /// Create keep chunks list from unmanaged memory in <see cref="CZopfliPNGOptions"/>.
+        /// Create keep chunks list from unmanaged memory in <see cref="CZopfliPngOptions"/>.
         /// </summary>
-        /// <param name="keepChunksPointer">Unmanaged memory pointer to keep chunks. (<see cref="CZopfliPNGOptions.KeepChunksPointer"/>)</param>
-        /// <param name="numKeepChunks">Number of keep chunks. (<see cref="CZopfliPNGOptions.NumKeepChunks"/>)</param>
+        /// <param name="keepChunksPointer">Unmanaged memory pointer to keep chunks. (<see cref="CZopfliPngOptions.KeepChunksPointer"/>)</param>
+        /// <param name="numKeepChunks">Number of keep chunks. (<see cref="CZopfliPngOptions.NumKeepChunks"/>)</param>
         /// <returns>Created keep chunks list.</returns>
         private static List<string> CreateKeepChunks(IntPtr keepChunksPointer, int numKeepChunks)
         {

@@ -3,7 +3,7 @@ namespace ZopfliSharp
     /// <summary>
     /// Enum forzopflipng strategy.
     /// </summary>
-    public enum ZopfliPNGFilterStrategy
+    public enum ZopfliPngFilterStrategy
     {
         /// <summary>
         /// Give all scanlines PNG filter type 0.

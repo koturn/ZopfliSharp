@@ -11,10 +11,10 @@ namespace ZopfliSharp.Internal
     /// <para>Option value for zopflipng.</para>
     /// <para>This structure is used to interact with zopflipng.dll.</para>
     /// </summary>
-    /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPNGSetDefaults(out CZopfliPNGOptions)"/>
-    /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPNGOptimize(IntPtr, UIntPtr, in CZopfliPNGOptions, bool, out MallocedMemoryHandle, out UIntPtr)"/>
+    /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPngSetDefaults(out CZopfliPngOptions)"/>
+    /// <seealso cref="ZopfliPng.UnsafeNativeMethods.CZopfliPngOptimize(IntPtr, UIntPtr, in CZopfliPngOptions, bool, out MallocedMemoryHandle, out UIntPtr)"/>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct CZopfliPNGOptions : IDisposable
+    internal struct CZopfliPngOptions : IDisposable
     {
         /// <summary>
         /// Default value for <see cref="LossyTransparent"/>.
@@ -98,7 +98,7 @@ namespace ZopfliSharp.Internal
         /// <param name="useZopfli">Use Zopfli deflate compression.</param>
         /// <param name="numIterations">Zopfli number of iterations.</param>
         /// <param name="numIterationsLarge">Zopfli number of iterations on large images.</param>
-        public CZopfliPNGOptions(
+        public CZopfliPngOptions(
             bool lossyTransparent = DefaultLossyTransparent,
             bool lossy8bit = DefaultLossy8bit,
             bool autoFilterStrategy = DefaultAutoFilterStrategy,
@@ -121,10 +121,10 @@ namespace ZopfliSharp.Internal
 
 
         /// <summary>
-        /// Create option instance from <see cref="ZopfliPNGOptions"/>.
+        /// Create option instance from <see cref="ZopfliPngOptions"/>.
         /// </summary>
-        /// <param name="pngOptions">Instance of <see cref="ZopfliPNGOptions"/>.</param>
-        public CZopfliPNGOptions(ZopfliPNGOptions pngOptions)
+        /// <param name="pngOptions">Instance of <see cref="ZopfliPngOptions"/>.</param>
+        public CZopfliPngOptions(ZopfliPngOptions pngOptions)
             : this(
                 pngOptions.LossyTransparent,
                 pngOptions.Lossy8bit,
@@ -142,7 +142,7 @@ namespace ZopfliSharp.Internal
         /// Set <see cref="FilterStrategiesPointer"/> and <see cref="NumFilterStrategies"/> from a list.
         /// </summary>
         /// <param name="filterStrategies">List of filter strategies.</param>
-        public void SetFilterStrategies(List<ZopfliPNGFilterStrategy> filterStrategies)
+        public void SetFilterStrategies(List<ZopfliPngFilterStrategy> filterStrategies)
         {
             DisposeFilterStrategies();
             (FilterStrategiesPointer, NumFilterStrategies) = CreateFilterStrategies(filterStrategies);
@@ -204,9 +204,9 @@ namespace ZopfliSharp.Internal
         /// Get default option value.
         /// </summary>
         /// <returns>Default option value.</returns>
-        public static CZopfliPNGOptions GetDefault()
+        public static CZopfliPngOptions GetDefault()
         {
-            ZopfliPng.UnsafeNativeMethods.CZopfliPNGSetDefaults(out var cPngOptions);
+            ZopfliPng.UnsafeNativeMethods.CZopfliPngSetDefaults(out var cPngOptions);
             return cPngOptions;
         }
 
@@ -216,7 +216,7 @@ namespace ZopfliSharp.Internal
         /// </summary>
         /// <param name="filterStrategies">List of filter strategies.</param>
         /// <returns>Tuple of pointer to the filter strategies and the number of them.</returns>
-        private static (IntPtr FilterStrategiesPointer, int NumFilterStrategies) CreateFilterStrategies(List<ZopfliPNGFilterStrategy> filterStrategies)
+        private static (IntPtr FilterStrategiesPointer, int NumFilterStrategies) CreateFilterStrategies(List<ZopfliPngFilterStrategy> filterStrategies)
         {
             if (filterStrategies is null || filterStrategies.Count == 0)
             {
@@ -224,12 +224,12 @@ namespace ZopfliSharp.Internal
             }
 
             var filterStrategiesCount = filterStrategies.Count;
-            var filterStrategiesPointer = Marshal.AllocCoTaskMem(sizeof(ZopfliPNGFilterStrategy) * filterStrategiesCount);
+            var filterStrategiesPointer = Marshal.AllocCoTaskMem(sizeof(ZopfliPngFilterStrategy) * filterStrategiesCount);
             var numFilterStrategies = filterStrategies.Count;
 
             unsafe
             {
-                var p = (ZopfliPNGFilterStrategy*)filterStrategiesPointer;
+                var p = (ZopfliPngFilterStrategy*)filterStrategiesPointer;
                 for (int i = 0; i < filterStrategiesCount; i++)
                 {
                     p[i] = filterStrategies[i];
