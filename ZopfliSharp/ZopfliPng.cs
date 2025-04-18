@@ -34,10 +34,10 @@ namespace ZopfliSharp
             /// </summary>
             /// <param name="pngOptions">Options struct for ZopfliPNG.</param>
 #if SUPPORT_LIBRARY_IMPORT
-            [LibraryImport("zopflipng.dll", EntryPoint = "CZopfliPNGSetDefaults", SetLastError = false)]
+            [LibraryImport("zopflipng", EntryPoint = "CZopfliPNGSetDefaults", SetLastError = false)]
             public static partial void CZopfliPNGSetDefaults(out CZopfliPNGOptions pngOptions);
 #else
-            [DllImport("zopflipng.dll", EntryPoint = "CZopfliPNGSetDefaults", ExactSpelling = true, SetLastError = false)]
+            [DllImport("zopflipng", EntryPoint = "CZopfliPNGSetDefaults", ExactSpelling = true, SetLastError = false)]
             public static extern void CZopfliPNGSetDefaults(out CZopfliPNGOptions pngOptions);
 #endif  // SUPPORT_LIBRARY_IMPORT
 
@@ -52,7 +52,7 @@ namespace ZopfliSharp
             /// <param name="resultpngSize">Result PNG binary size.</param>
             /// <returns>Status code. 0 means success, otherwise it means failure.</returns>
 #if SUPPORT_LIBRARY_IMPORT
-            [LibraryImport("zopflipng.dll", EntryPoint = "CZopfliPNGOptimize", SetLastError = false)]
+            [LibraryImport("zopflipng", EntryPoint = "CZopfliPNGOptimize", SetLastError = false)]
             public static partial int CZopfliPNGOptimize(
                 IntPtr origPng,
                 UIntPtr origpngSize,
@@ -61,7 +61,7 @@ namespace ZopfliSharp
                 out MallocedMemoryHandle resultPng,
                 out UIntPtr resultpngSize);
 #else
-            [DllImport("zopflipng.dll", EntryPoint = "CZopfliPNGOptimize", ExactSpelling = true, SetLastError = false)]
+            [DllImport("zopflipng", EntryPoint = "CZopfliPNGOptimize", ExactSpelling = true, SetLastError = false)]
             public static extern int CZopfliPNGOptimize(
                 IntPtr origPng,
                 UIntPtr origpngSize,
