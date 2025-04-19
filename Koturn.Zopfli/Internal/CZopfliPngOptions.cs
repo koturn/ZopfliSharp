@@ -1,3 +1,7 @@
+#if NET7_0_OR_GREATER
+#    define RUNTIME_MARSHALLING_DISABLED
+#endif
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -46,13 +50,37 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Allow altering hidden colors of fully transparent pixels.
         /// </summary>
+#if RUNTIME_MARSHALLING_DISABLED
+        public bool LossyTransparent
+        {
+            readonly get => _lossyTransparent != 0;
+            set => _lossyTransparent = value ? 1 : 0;
+        }
+        /// <summary>
+        /// Actual value of <see cref="LossyTransparent"/>.
+        /// </summary>
+        private int _lossyTransparent;
+#else
         [field: MarshalAs(UnmanagedType.Bool)]
         public bool LossyTransparent { get; set; }
+#endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// Convert 16-bit per channel images to 8-bit per channel.
         /// </summary>
+#if RUNTIME_MARSHALLING_DISABLED
+        public bool Lossy8bit
+        {
+            readonly get => _lossy8bit != 0;
+            set => _lossy8bit = value ? 1 : 0;
+        }
+        /// <summary>
+        /// Actual value of <see cref="Lossy8bit"/>.
+        /// </summary>
+        private int _lossy8bit;
+#else
         [field: MarshalAs(UnmanagedType.Bool)]
         public bool Lossy8bit { get; set; }
+#endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// Filter strategies to try.
         /// </summary>
@@ -64,8 +92,20 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Automatically choose filter strategy using less good compression.
         /// </summary>
+#if RUNTIME_MARSHALLING_DISABLED
+        public bool AutoFilterStrategy
+        {
+            readonly get => _autoFilterStrategy != 0;
+            set => _autoFilterStrategy = value ? 1 : 0;
+        }
+        /// <summary>
+        /// Actual value of <see cref="AutoFilterStrategy"/>.
+        /// </summary>
+        private int _autoFilterStrategy;
+#else
         [field: MarshalAs(UnmanagedType.Bool)]
         public bool AutoFilterStrategy { get; set; }
+#endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// <para>PNG chunks to keep</para>
         /// <para>chunks to literally copy over from the original PNG to the resulting one.</para>
@@ -78,8 +118,20 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Use Zopfli deflate compression.
         /// </summary>
+#if RUNTIME_MARSHALLING_DISABLED
+        public bool UseZopfli
+        {
+            readonly get => _useZopfli != 0;
+            set => _useZopfli = value ? 1 : 0;
+        }
+        /// <summary>
+        /// Actual value of <see cref="UseZopfli"/>.
+        /// </summary>
+        private int _useZopfli;
+#else
         [field: MarshalAs(UnmanagedType.Bool)]
         public bool UseZopfli { get; set; }
+#endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// Zopfli number of iterations.
         /// </summary>

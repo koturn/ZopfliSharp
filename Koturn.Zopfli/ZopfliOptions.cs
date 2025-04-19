@@ -1,3 +1,7 @@
+#if NET7_0_OR_GREATER
+#    define RUNTIME_MARSHALLING_DISABLED
+#endif
+
 using System;
 using System.Runtime.InteropServices;
 using Koturn.Zopfli.Enums;
@@ -17,11 +21,37 @@ namespace Koturn.Zopfli
         /// <summary>
         /// Whether to print output
         /// </summary>
+#if RUNTIME_MARSHALLING_DISABLED
+        public bool Verbose
+        {
+            readonly get => _verbose != 0;
+            set => _verbose = value ? 1 : 0;
+        }
+        /// <summary>
+        /// Actual value of <see cref="Verbose"/>.
+        /// </summary>
+        private int _verbose;
+#else
+        [field: MarshalAs(UnmanagedType.Bool)]
         public bool Verbose { get; set; }
+#endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// Whether to print more detailed output
         /// </summary>
+#if RUNTIME_MARSHALLING_DISABLED
+        public bool VerboseMore
+        {
+            readonly get => _verboseMore != 0;
+            set => _verboseMore = value ? 1 : 0;
+        }
+        /// <summary>
+        /// Actual value of <see cref="VerboseMore"/>.
+        /// </summary>
+        private int _verboseMore;
+#else
+        [field: MarshalAs(UnmanagedType.Bool)]
         public bool VerboseMore { get; set; }
+#endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// <para>Maximum amount of times to rerun forward and backward pass to optimize LZ77 compression cost.</para>
         /// <para>Good values: 10, 15 for small files, 5 for files over several MB in size or it will be too slow.</para>
@@ -32,11 +62,29 @@ namespace Koturn.Zopfli
         /// <para>Block splitting gives better compression.</para>
         /// <para>Default: true (1).</para>
         /// </summary>
+#if RUNTIME_MARSHALLING_DISABLED
+        public bool BlockSplitting
+        {
+            readonly get => _blockSplitting != 0;
+            set => _blockSplitting = value ? 1 : 0;
+        }
+        /// <summary>
+        /// Actual value of <see cref="BlockSplitting"/>.
+        /// </summary>
+        private int _blockSplitting;
+#else
+        [field: MarshalAs(UnmanagedType.Bool)]
         public bool BlockSplitting { get; set; }
+#endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// No longer used, left for compatibility.
         /// </summary>
+#if RUNTIME_MARSHALLING_DISABLED
+        private readonly int _blockSplittingLast;
+#else
+        [field: MarshalAs(UnmanagedType.Bool)]
         private readonly bool _blockSplittingLast;
+#endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// <para>Maximum amount of blocks to split into (0 for unlimited, but this can give extreme results that hurt compression on some files).</para>
         /// <para>Default value: 15.</para>
