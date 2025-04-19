@@ -1,8 +1,10 @@
 version: 1.0.{build}
 image: Visual Studio 2022
+init:
+- cmd: '"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat"'
 install:
 - cmd: >-
-    "C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat"
+    git submodule update --init
 
     nmake restore
 build_script:

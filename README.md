@@ -23,7 +23,6 @@ A P/Invoke library for [google/zopfli](https://github.com/google/zopfli "google/
 ## Dependent Libraries
 
 - [google/zopfli](https://github.com/google/zopfli "google/zopfli")
-    - But this repository doesn't contain zopfli.dll and zopflipng.dll.
 
 
 ## LICENSE
