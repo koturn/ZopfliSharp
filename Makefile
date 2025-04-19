@@ -12,6 +12,7 @@ TARGET_NET6 = net6.0
 TARGET_NET8 = net8.0
 TARGET_NET9 = net9.0
 RM = del /F /Q
+RMDIR = rmdir /S /Q
 
 
 all: build
