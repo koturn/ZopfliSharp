@@ -1,4 +1,4 @@
-version: 1.0.{build}
+version: 2.1.0.{build}
 image: Visual Studio 2022
 init:
 - cmd: '"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\Tools\VsDevCmd.bat"'
