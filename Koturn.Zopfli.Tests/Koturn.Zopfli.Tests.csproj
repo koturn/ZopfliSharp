@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>net9.0;net481</TargetFrameworks>
+    <LangVersion>13</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.collector" Version="6.0.2" />
+    <PackageReference Include="Iconic.Zlib.Netstandard" Version="1.0.0" Condition="'$(TargetFramework)'=='net481'" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.12.0" />
+    <PackageReference Include="xunit" Version="2.9.2" />
+    <PackageReference Include="Xunit.Extensions.AssemblyFixture" Version="2.6.0" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.8.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Koturn.Zopfli\Koturn.Zopfli.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="TestData\lena.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="for %25%25p in (x86 x64) do (&#xD;&#xA;  for %25%25d in (libzopfli libzopflipng) do (&#xD;&#xA;    if exist &quot;$(ProjectDir)..\%25%25d\%25%25p\$(Configuration)&quot; (&#xD;&#xA;      xcopy /d /i /S /Y &quot;$(ProjectDir)..\%25%25d\%25%25p\$(Configuration)\*.dll&quot; &quot;$(OutDir)%25%25p\&quot;&#xD;&#xA;    )&#xD;&#xA;  )&#xD;&#xA;)" />
+  </Target>
+
+</Project>

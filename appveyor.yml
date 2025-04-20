@@ -12,6 +12,8 @@ build_script:
     nmake
 
     nmake deploy
+test_script:
+- cmd: nmake test
 artifacts:
 - path: Koturn.Zopfli-netstandard2.0.zip
   name: .NET standard 2.0 binary

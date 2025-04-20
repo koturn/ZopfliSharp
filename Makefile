@@ -1,6 +1,7 @@
 SOLUTION_NAME = Koturn.Zopfli
 SOLUTION_FILE = $(SOLUTION_NAME).sln
 MAIN_PROJECT_FILE = $(SOLUTION_NAME)\$(SOLUTION_NAME).csproj
+TEST_PROJECT_FILE = Koturn.Zopfli.Tests\Koturn.Zopfli.Tests.csproj
 PROJECT_DIRS = $(SOLUTION_NAME)
 CXX_PROJECT_DIRS = libzopfli libzopflipng
 ARTIFACTS_BASEDIR = Artifacts
@@ -27,6 +28,9 @@ build:
 
 restore:
 	dotnet restore $(SOLUTION_FILE)
+
+test:
+	dotnet test -c $(BUILD_CONFIG) --logger:Console;verbosity=detailed $(TEST_PROJECT_FILE)
 
 deploy: deploy-$(TARGET_NETSTD20) deploy-$(TARGET_NET6) deploy-$(TARGET_NET8) deploy-$(TARGET_NET9)
 
