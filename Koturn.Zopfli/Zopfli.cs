@@ -37,10 +37,10 @@ namespace Koturn.Zopfli
             /// </summary>
             /// <param name="options">Destination struct of default values.</param>
 #if SUPPORT_LIBRARY_IMPORT
-            [LibraryImport("zopfli", EntryPoint = "ZopfliInitOptions", SetLastError = false)]
+            [LibraryImport("zopfli", EntryPoint = nameof(ZopfliInitOptions), SetLastError = false)]
             public static partial void ZopfliInitOptions(out ZopfliOptions options);
 #else
-            [DllImport("zopfli", EntryPoint = "ZopfliInitOptions", ExactSpelling = true, SetLastError = false)]
+            [DllImport("zopfli", EntryPoint = nameof(ZopfliInitOptions), ExactSpelling = true, SetLastError = false)]
             public static extern void ZopfliInitOptions(out ZopfliOptions options);
 #endif  // SUPPORT_LIBRARY_IMPORT
 
@@ -54,7 +54,7 @@ namespace Koturn.Zopfli
             /// <param name="outData">Pointer to the dynamic output array to which the result is appended. Must be freed after use.</param>
             /// <param name="outDatasize">Pointer to the dynamic output array size</param>
 #if SUPPORT_LIBRARY_IMPORT
-            [LibraryImport("zopfli", EntryPoint = "ZopfliCompress", SetLastError = false)]
+            [LibraryImport("zopfli", EntryPoint = nameof(ZopfliCompress), SetLastError = false)]
             public static partial void ZopfliCompress(
                 in ZopfliOptions options,
                 ZopfliFormat outputType,
@@ -63,7 +63,7 @@ namespace Koturn.Zopfli
                 out MallocedMemoryHandle outData,
                 out UIntPtr outDatasize);
 #else
-            [DllImport("zopfli", EntryPoint = "ZopfliCompress", ExactSpelling = true, SetLastError = false)]
+            [DllImport("zopfli", EntryPoint = nameof(ZopfliCompress), ExactSpelling = true, SetLastError = false)]
             public static extern void ZopfliCompress(
                 in ZopfliOptions options,
                 ZopfliFormat outputType,
@@ -86,7 +86,7 @@ namespace Koturn.Zopfli
             /// <param name="outData">Pointer to the dynamic output array to which the result is appended. Must be freed after use.</param>
             /// <param name="outDatasize">The dynamic output array size.</param>
 #if SUPPORT_LIBRARY_IMPORT
-            [LibraryImport("zopfli", EntryPoint = "ZopfliDeflatePart", SetLastError = false)]
+            [LibraryImport("zopfli", EntryPoint = nameof(ZopfliDeflatePart), SetLastError = false)]
             public static unsafe partial void ZopfliDeflatePart(
                 in ZopfliOptions options,
                 BlockType blockType,
@@ -98,7 +98,7 @@ namespace Koturn.Zopfli
                 ref MallocedMemoryHandle? outData,
                 ref UIntPtr outDatasize);
 #else
-            [DllImport("zopfli", EntryPoint = "ZopfliDeflatePart", ExactSpelling = true, SetLastError = false)]
+            [DllImport("zopfli", EntryPoint = nameof(ZopfliDeflatePart), ExactSpelling = true, SetLastError = false)]
             public static unsafe extern void ZopfliDeflatePart(
                 in ZopfliOptions options,
                 BlockType blockType,
