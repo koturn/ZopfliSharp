@@ -125,8 +125,8 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\libzopfli\$(PlatformTarget)\$(Configuration)\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>for %%f in (netstandard2.0 net6.0 net8.0 net9.0) do (
-  xcopy /d /i /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
+      <Command>for /D %%d in ("$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\*") do (
+  xcopy /d /i /S /Y "$(OutDir)*.dll" "%%d\$(PlatformTarget)\"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -153,8 +153,8 @@
       <AdditionalLibraryDirectories>$(ProjectDir)..\libzopfli\$(PlatformTarget)\$(Configuration)\</AdditionalLibraryDirectories>
     </Link>
     <PostBuildEvent>
-      <Command>for %%f in (netstandard2.0 net6.0 net8.0 net9.0) do (
-  xcopy /d /i /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
+      <Command>for /D %%d in ("$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\*") do (
+  xcopy /d /i /S /Y "$(OutDir)*.dll" "%%d\$(PlatformTarget)\"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -176,8 +176,8 @@
       <ModuleDefinitionFile>libzopflipng.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>for %%f in (netstandard2.0 net6.0 net8.0 net9.0) do (
-  xcopy /d /i /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
+      <Command>for /D %%d in ("$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\*") do (
+  xcopy /d /i /S /Y "$(OutDir)*.dll" "%%d\$(PlatformTarget)\"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -204,8 +204,8 @@
       <ModuleDefinitionFile>libzopflipng.def</ModuleDefinitionFile>
     </Link>
     <PostBuildEvent>
-      <Command>for %%f in (netstandard2.0 net6.0 net8.0 net9.0) do (
-  xcopy /d /i /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
+      <Command>for /D %%d in ("$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\*") do (
+  xcopy /d /i /S /Y "$(OutDir)*.dll" "%%d\$(PlatformTarget)\"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>

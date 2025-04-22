@@ -19,11 +19,11 @@ RMDIR = rmdir /S /Q
 all: build
 
 build:
+	dotnet build -c $(BUILD_CONFIG) $(MAIN_PROJECT_FILE)
 	msbuild /nologo /m /p:Configuration=$(BUILD_CONFIG);Platform=x64 libzopfli\libzopfli.vcxproj
 	msbuild /nologo /m /p:Configuration=$(BUILD_CONFIG);Platform=x86 libzopfli\libzopfli.vcxproj
 	msbuild /nologo /m /p:Configuration=$(BUILD_CONFIG);Platform=x64 libzopflipng\libzopflipng.vcxproj
 	msbuild /nologo /m /p:Configuration=$(BUILD_CONFIG);Platform=x86 libzopflipng\libzopflipng.vcxproj
-	dotnet build -c $(BUILD_CONFIG) $(MAIN_PROJECT_FILE)
 
 restore:
 	dotnet restore $(SOLUTION_FILE)
