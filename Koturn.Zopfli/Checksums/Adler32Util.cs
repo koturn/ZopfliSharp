@@ -197,7 +197,7 @@ namespace Koturn.Zopfli.Checksums
 
                         vs2 = Sse2.Add(vs2, Sse2.Shuffle(vs2, 0b10110001));
                         vs2 = Sse2.Add(vs2, Sse2.Shuffle(vs2, 0b01001110));
-                        s2 += Sse2.ConvertToUInt32(vs2);
+                        s2 = Sse2.ConvertToUInt32(vs2);
 
                         // Reduce.
                         s1 %= Base;
