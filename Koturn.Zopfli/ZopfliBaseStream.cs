@@ -13,7 +13,7 @@ namespace Koturn.Zopfli
     /// <param name="stream">Destination stream.</param>
     /// <param name="leaveOpen">true to leave the stream object open after disposing
     /// the <see cref="ZopfliBaseStream"/> object; otherwise, false.</param>
-    public abstract class ZopfliBaseStream(Stream stream, bool leaveOpen = true)
+    public abstract class ZopfliBaseStream(Stream stream, bool leaveOpen)
         : Stream
     {
         /// <summary>

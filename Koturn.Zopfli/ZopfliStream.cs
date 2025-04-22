@@ -21,7 +21,7 @@ namespace Koturn.Zopfli
     /// <param name="isWriteImmediately">Write intermidiate result data to <see cref="ZopfliBaseStream.BaseStream"/> on each data block compression.</param>
     /// <param name="leaveOpen">true to leave the stream object open after disposing
     /// the <see cref="ZopfliStream"/> object; otherwise, false.</param>
-    public class ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, int cacheSize, bool isWriteImmediately, bool leaveOpen = true)
+    public class ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, int cacheSize, bool isWriteImmediately, bool leaveOpen = false)
         : ZopfliBaseStream(stream, leaveOpen)
     {
         /// <summary>
@@ -114,7 +114,7 @@ namespace Koturn.Zopfli
         /// <param name="stream">Destination stream</param>
         /// <param name="leaveOpen">true to leave the stream object open after disposing
         /// the <see cref="ZopfliStream"/> object; otherwise, false.</param>
-        public ZopfliStream(Stream stream, bool leaveOpen = true)
+        public ZopfliStream(Stream stream, bool leaveOpen = false)
             : this(stream, ZopfliOptions.GetDefault(), ZopfliFormat.GZip, DefaultCacheSize, false, leaveOpen)
         {
         }
@@ -127,7 +127,7 @@ namespace Koturn.Zopfli
         /// <param name="options">Options for Zopfli compression.</param>
         /// <param name="leaveOpen">true to leave the stream object open after disposing
         /// the <see cref="ZopfliStream"/> object; otherwise, false.</param>
-        public ZopfliStream(Stream stream, in ZopfliOptions options, bool leaveOpen = true)
+        public ZopfliStream(Stream stream, in ZopfliOptions options, bool leaveOpen = false)
             : this(stream, options, ZopfliFormat.GZip, DefaultCacheSize, false, leaveOpen)
         {
         }
@@ -141,7 +141,7 @@ namespace Koturn.Zopfli
         /// <param name="format">Output binary format.</param>
         /// <param name="leaveOpen">true to leave the stream object open after disposing
         /// the <see cref="ZopfliStream"/> object; otherwise, false.</param>
-        public ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, bool leaveOpen = true)
+        public ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, bool leaveOpen = false)
             : this(stream, options, format, DefaultCacheSize, false, leaveOpen)
         {
         }
@@ -156,7 +156,7 @@ namespace Koturn.Zopfli
         /// <param name="cacheSize">The size of the data to be compressed at one time. The write data is cached until it reaches this size.</param>
         /// <param name="leaveOpen">true to leave the stream object open after disposing
         /// the <see cref="ZopfliStream"/> object; otherwise, false.</param>
-        public ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, int cacheSize, bool leaveOpen = true)
+        public ZopfliStream(Stream stream, in ZopfliOptions options, ZopfliFormat format, int cacheSize, bool leaveOpen = false)
             : this(stream, options, format, cacheSize, false, leaveOpen)
         {
         }
