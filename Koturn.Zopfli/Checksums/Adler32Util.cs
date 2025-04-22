@@ -124,6 +124,9 @@ namespace Koturn.Zopfli.Checksums
         /// <param name="buf"><see cref="ReadOnlySpan{T}"/> of <see cref="byte"/> data.</param>
         /// <param name="adler">Intermidiate Adler32 value.</param>
         /// <returns>Updated intermidiate Adler32 value.</returns>
+        /// <remarks>
+        /// <see href="https://chromium.googlesource.com/chromium/src/third_party/+/master/zlib/adler32_simd.c"/>.
+        /// </remarks>
         [Pure]
         private static uint UpdateSsse3(ReadOnlySpan<byte> buf, uint adler = InitialValue)
         {
@@ -176,11 +179,11 @@ namespace Koturn.Zopfli.Checksums
                             // bytes by [ 32, 31, 30, ... ] for s2.
                             //
                             vs1 = Sse2.Add(vs1, Sse2.SumAbsoluteDifferences(bytes1, zero).AsUInt32());
-                            var mad1 = Ssse3.MultiplyAddAdjacent(bytes1, tap1).AsInt16();
+                            var mad1 = Ssse3.MultiplyAddAdjacent(bytes1, tap1);
                             vs2 = Sse2.Add(vs2, Sse2.MultiplyAddAdjacent(mad1, ones).AsUInt32());
 
                             vs1 = Sse2.Add(vs1, Sse2.SumAbsoluteDifferences(bytes2, zero).AsUInt32());
-                            var mad2 = Ssse3.MultiplyAddAdjacent(bytes2, tap2).AsInt16();
+                            var mad2 = Ssse3.MultiplyAddAdjacent(bytes2, tap2);
                             vs2 = Sse2.Add(vs2, Sse2.MultiplyAddAdjacent(mad2, ones).AsUInt32());
 
                             p += BlockSize;
@@ -191,12 +194,12 @@ namespace Koturn.Zopfli.Checksums
                         //
                         // Sum epi32 ints vs1(s2) and accumulate in s1(s2).
                         //
-                        vs1 = Sse2.Add(vs1, Sse2.Shuffle(vs1, 0b10110001));
-                        vs1 = Sse2.Add(vs1, Sse2.Shuffle(vs1, 0b01001110));
+                        vs1 = Sse2.Add(vs1, Sse2.Shuffle(vs1, 0b10110001));  // _MM_SHUFFLE(2, 3, 0, 1)
+                        vs1 = Sse2.Add(vs1, Sse2.Shuffle(vs1, 0b01001110));  // _MM_SHUFFLE(1, 0, 3, 2)
                         s1 += Sse2.ConvertToUInt32(vs1);
 
-                        vs2 = Sse2.Add(vs2, Sse2.Shuffle(vs2, 0b10110001));
-                        vs2 = Sse2.Add(vs2, Sse2.Shuffle(vs2, 0b01001110));
+                        vs2 = Sse2.Add(vs2, Sse2.Shuffle(vs2, 0b10110001));  // _MM_SHUFFLE(2, 3, 0, 1)
+                        vs2 = Sse2.Add(vs2, Sse2.Shuffle(vs2, 0b01001110));  // _MM_SHUFFLE(1, 0, 3, 2)
                         s2 = Sse2.ConvertToUInt32(vs2);
 
                         // Reduce.
