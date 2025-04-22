@@ -3,35 +3,32 @@
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net6.0;net8.0;net9.0</TargetFrameworks>
     <LangVersion>13</LangVersion>
+    <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <WarningLevel>8</WarningLevel>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>Koturn.Zopfli</Title>
+    <Version>2.1.0</Version>
     <Authors>koturn</Authors>
     <Company>koturn</Company>
     <Description>A P/Invoke library for google/zopfli (zopfli.dll and zopflipng.dll).</Description>
     <Copyright>Copyright (C) 2020 koturn All Rights Reserverd.</Copyright>
-    <PackageLicenseFile>..\LICENSE</PackageLicenseFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageProjectUrl>https://github.com/koturn/Koturn.Zipfli</PackageProjectUrl>
     <RepositoryUrl>https://github.com/koturn/Koturn.Zipfli</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <Version>2.1.0</Version>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackageTags>zopfli;zopflipng</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Include="..\README.md">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
     <None Include="..\LICENSE">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
+    </None>
+    <None Include="..\README.md">
+      <Pack>True</Pack>
+      <PackagePath>\</PackagePath>
     </None>
   </ItemGroup>
 
