@@ -126,7 +126,7 @@
     </Link>
     <PostBuildEvent>
       <Command>for %%f in (netstandard2.0 net6.0 net8.0 net9.0) do (
-  xcopy /d /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
+  xcopy /d /i /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -154,7 +154,7 @@
     </Link>
     <PostBuildEvent>
       <Command>for %%f in (netstandard2.0 net6.0 net8.0 net9.0) do (
-  xcopy /d /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
+  xcopy /d /i /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -177,7 +177,7 @@
     </Link>
     <PostBuildEvent>
       <Command>for %%f in (netstandard2.0 net6.0 net8.0 net9.0) do (
-  xcopy /d /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
+  xcopy /d /i /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
@@ -205,7 +205,7 @@
     </Link>
     <PostBuildEvent>
       <Command>for %%f in (netstandard2.0 net6.0 net8.0 net9.0) do (
-  xcopy /d /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
+  xcopy /d /i /S /Y "$(OutDir)*.dll" "$(ProjectDir)..\Koturn.Zopfli\bin\$(Configuration)\%%f\$(PlatformTarget)\"
 )</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
