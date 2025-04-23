@@ -14,8 +14,8 @@ build_script:
     nmake deploy
 artifacts:
 - path: Koturn.Zopfli-netstandard2.0.zip
-  name: Koturn.Zopfli-netstandard2.0
+  name: .NET standard 2.0 binary
 - path: Koturn.Zopfli-net8.0.zip
-  name: Koturn.Zopfli-net8.0.zip
+  name: .NET 8.0 binary
 - path: Koturn.Zopfli-net9.0.zip
-  name: Koturn.Zopfli-net9.0
+  name: .NET 9.0 binary
