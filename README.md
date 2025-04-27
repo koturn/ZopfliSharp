@@ -1,6 +1,8 @@
 Koturn.Zopfli
 =============
 
+[![.NET](https://github.com/koturn/Koturn.Zopfli/actions/workflows/dotnet.yml/badge.svg?branch=main)](https://github.com/koturn/Koturn.Zopfli/actions/workflows/dotnet.yml)
+
 [![Test status](https://ci.appveyor.com/api/projects/status/19lmdvo61hc385l0/branch/main?svg=true)](https://ci.appveyor.com/project/koturn/koturn-zopfli "AppVeyor | koturn/Koturn.Zopfli")
 
 A P/Invoke library for [google/zopfli](https://github.com/google/zopfli "google/zopfli") (zopfli.dll and zopflipng.dll).
