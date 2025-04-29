@@ -15,7 +15,7 @@ namespace Koturn.Zopfli
     /// <param name="pngOptions">Options for Zopfli PNG optimization.</param>
     /// <param name="leaveOpen">true to leave the stream object open after disposing
     /// the <see cref="ZopfliPngStream"/> object; otherwise, false.</param>
-    public class ZopfliPngStream(Stream stream, ZopfliPngOptions pngOptions, bool leaveOpen = false)
+    public class ZopfliPngStream(Stream stream, ZopfliPngOptions pngOptions, bool leaveOpen)
         : ZopfliBaseStream(stream, leaveOpen)
     {
         /// <summary>
@@ -45,9 +45,19 @@ namespace Koturn.Zopfli
         /// by using the specified stream.
         /// </summary>
         /// <param name="stream">Destination stream.</param>
+        public ZopfliPngStream(Stream stream)
+            : this(stream, ZopfliPngOptions.GetDefault(), false)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZopfliPngStream"/> class
+        /// by using the specified stream.
+        /// </summary>
+        /// <param name="stream">Destination stream.</param>
         /// <param name="leaveOpen">true to leave the stream object open after disposing
         /// the <see cref="ZopfliPngStream"/> object; otherwise, false.</param>
-        public ZopfliPngStream(Stream stream, bool leaveOpen = false)
+        public ZopfliPngStream(Stream stream, bool leaveOpen)
             : this(stream, ZopfliPngOptions.GetDefault(), leaveOpen)
         {
         }
