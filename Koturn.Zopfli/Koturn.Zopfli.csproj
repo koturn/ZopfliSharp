@@ -36,8 +36,4 @@
     <PackageReference Include="System.Memory" Version="4.6.3" Condition="'$(TargetFramework)'=='netstandard2.0'" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Checksums\" />
-  </ItemGroup>
-
 </Project>
