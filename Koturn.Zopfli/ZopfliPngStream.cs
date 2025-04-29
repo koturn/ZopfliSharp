@@ -12,10 +12,10 @@ namespace Koturn.Zopfli
     /// by using the specified stream and options.
     /// </remarks>
     /// <param name="stream">Destination stream.</param>
-    /// <param name="pngOptions">Options for Zopfli PNG optimization.</param>
+    /// <param name="options">Options for Zopfli PNG optimization.</param>
     /// <param name="leaveOpen">true to leave the stream object open after disposing
     /// the <see cref="ZopfliPngStream"/> object; otherwise, false.</param>
-    public class ZopfliPngStream(Stream stream, ZopfliPngOptions pngOptions, bool leaveOpen)
+    public class ZopfliPngStream(Stream stream, ZopfliPngOptions options, bool leaveOpen)
         : ZopfliBaseStream(stream, leaveOpen)
     {
         /// <summary>
@@ -30,7 +30,7 @@ namespace Koturn.Zopfli
         /// <remarks>
         /// Used for <seealso cref="ZopfliPng.OptimizePng(byte[], int, int, ZopfliPngOptions, bool)"/>
         /// </remarks>
-        public ZopfliPngOptions PNGOptions { get; set; } = pngOptions;
+        public ZopfliPngOptions Options { get; set; } = options;
 
         /// <summary>
         /// Buffer for reading <see cref="ZopfliBaseStream.BaseStream"/>.
@@ -90,7 +90,7 @@ namespace Koturn.Zopfli
             SetCanWrite(false);
 
             // Take a long time
-            var compressedData = ZopfliPng.OptimizePng(_buffer, 0, _position, PNGOptions);
+            var compressedData = ZopfliPng.OptimizePng(_buffer, 0, _position, Options);
 
             BaseStream.Write(compressedData, 0, compressedData.Length);
         }

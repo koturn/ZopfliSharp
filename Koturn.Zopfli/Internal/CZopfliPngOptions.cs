@@ -185,18 +185,18 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Create option instance from <see cref="ZopfliPngOptions"/>.
         /// </summary>
-        /// <param name="pngOptions">Instance of <see cref="ZopfliPngOptions"/>.</param>
-        public CZopfliPngOptions(ZopfliPngOptions pngOptions)
+        /// <param name="options">Instance of <see cref="ZopfliPngOptions"/>.</param>
+        public CZopfliPngOptions(ZopfliPngOptions options)
             : this(
-                pngOptions.LossyTransparent,
-                pngOptions.Lossy8bit,
-                pngOptions.AutoFilterStrategy,
-                pngOptions.UseZopfli,
-                pngOptions.NumIterations,
-                pngOptions.NumIterationsLarge)
+                options.LossyTransparent,
+                options.Lossy8bit,
+                options.AutoFilterStrategy,
+                options.UseZopfli,
+                options.NumIterations,
+                options.NumIterationsLarge)
         {
-            SetFilterStrategies(pngOptions.FilterStrategies);
-            SetKeepChunks(pngOptions.KeepChunks);
+            SetFilterStrategies(options.FilterStrategies);
+            SetKeepChunks(options.KeepChunks);
         }
 
 
