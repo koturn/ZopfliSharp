@@ -190,7 +190,7 @@ namespace Koturn.Zopfli
         /// <returns>Result PNG binary.</returns>
         public static byte[] OptimizePng(ReadOnlySpan<byte> pngData)
         {
-            using (var cPngOptions =  CZopfliPngOptions.GetDefault())
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
             {
                 return OptimizePng(pngData, cPngOptions, false);
             }
@@ -205,7 +205,7 @@ namespace Koturn.Zopfli
         [EditorBrowsable(EditorBrowsableState.Advanced)]
         public static byte[] OptimizePng(ReadOnlySpan<byte> pngData, bool verbose)
         {
-            using (var cPngOptions =  CZopfliPngOptions.GetDefault())
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
             {
                 return OptimizePng(pngData, cPngOptions, verbose);
             }
