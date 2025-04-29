@@ -16,8 +16,13 @@ namespace Koturn.Zopfli.Internal
     /// <para>Option value for zopflipng.</para>
     /// <para>This structure is used to interact with zopflipng.dll.</para>
     /// </summary>
-    /// <seealso cref="ZopfliPng.SafeNativeMethods.CZopfliPngSetDefaults(out CZopfliPngOptions)"/>
-    /// <seealso cref="ZopfliPng.SafeNativeMethods.CZopfliPngOptimize(IntPtr, UIntPtr, in CZopfliPngOptions, bool, out MallocedMemoryHandle, out UIntPtr)"/>
+    /// <remarks>
+    /// This structure is used for following P/Invoke methods.
+    /// <list type="bullet">
+    ///   <item><seealso cref="ZopfliPng.SafeNativeMethods.CZopfliPngSetDefaults(out CZopfliPngOptions)"/></item>
+    ///   <item><seealso cref="ZopfliPng.SafeNativeMethods.CZopfliPngOptimize(IntPtr, UIntPtr, in CZopfliPngOptions, bool, out MallocedMemoryHandle, out UIntPtr)"/></item>
+    /// </list>
+    /// </remarks>
     [StructLayout(LayoutKind.Sequential)]
     internal struct CZopfliPngOptions : IDisposable
     {

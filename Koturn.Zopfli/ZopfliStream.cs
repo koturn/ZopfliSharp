@@ -39,10 +39,6 @@ namespace Koturn.Zopfli
         /// <summary>
         /// Options for Zopfli compression.
         /// </summary>
-        /// <seealso cref="Zopfli.Compress(byte[], in ZopfliOptions)"/>
-        /// <seealso cref="Zopfli.Compress(byte[], in ZopfliOptions, ZopfliFormat)"/>
-        /// <seealso cref="Zopfli.Compress(byte[], int, int, in ZopfliOptions)"/>
-        /// <seealso cref="Zopfli.Compress(byte[], int, int, in ZopfliOptions, ZopfliFormat)"/>
         public ZopfliOptions Options
         {
             get => _options;
@@ -65,7 +61,9 @@ namespace Koturn.Zopfli
         /// <summary>
         /// Options for Zopfli compression.
         /// </summary>
+        /// <remarks>
         /// <seealso cref="Options"/>
+        /// </remarks>
         private ZopfliOptions _options = options;
         /// <summary>
         /// Malloced memory handle of compressed data.

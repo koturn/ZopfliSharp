@@ -27,7 +27,9 @@ namespace Koturn.Zopfli
         /// <summary>
         /// Options for PNG optimization.
         /// </summary>
-        /// <seealso cref="ZopfliPng.OptimizePng(byte[], int, int, ZopfliPngOptions, bool)"/>
+        /// <remarks>
+        /// Used for <seealso cref="ZopfliPng.OptimizePng(byte[], int, int, ZopfliPngOptions, bool)"/>
+        /// </remarks>
         public ZopfliPngOptions PNGOptions { get; set; } = pngOptions;
 
         /// <summary>
