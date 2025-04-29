@@ -6,14 +6,14 @@ install:
 - cmd: >-
     git submodule update --init
 
-    nmake restore
+    nmake /nologo restore
 build_script:
 - cmd: >-
-    nmake
+    nmake /nologo
 
-    nmake deploy
+    nmake /nologo deploy
 test_script:
-- cmd: nmake test
+- cmd: nmake /nologo test
 artifacts:
 - path: Koturn.Zopfli-netstandard2.0.zip
   name: .NET standard 2.0 binary
