@@ -846,12 +846,13 @@ namespace Koturn.Zopfli
 
             const uint cmfflg = cmfflgPre | fcheck;
 
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+            ReadOnlySpan<byte> data = [(byte)(cmfflg >> 8), unchecked((byte)cmfflg)];
+            s.Write(data);
+#else
             s.WriteByte((byte)(cmfflg >> 8));
-            unchecked
-            {
-                s.WriteByte((byte)cmfflg);
-            }
-
+            s.WriteByte(unchecked((byte)cmfflg));
+#endif  // NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
             return sizeof(byte) * 2;
         }
 
@@ -863,7 +864,13 @@ namespace Koturn.Zopfli
         /// <returns>Size of gzip header (always 10).</returns>
         internal static int WriteGZipHeader(Stream s)
         {
-            var gzipHeader = new byte[] {
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+            ReadOnlySpan<byte> gzipHeader =
+
+#else
+            byte[] gzipHeader =
+#endif  // NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+            [
                 31,  // ID1
                 139,  // ID2
                 8, // CM
@@ -871,8 +878,12 @@ namespace Koturn.Zopfli
                 0, 0, 0, 0,  // MTIME
                 2,  // XFL, 2 indicates best compression.
                 3  // OS follows Unix conventions.
-            };
+            ];
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+            s.Write(gzipHeader);
+#else
             s.Write(gzipHeader, 0, gzipHeader.Length);
+#endif  // NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 
             return gzipHeader.Length;
         }
@@ -953,11 +964,23 @@ namespace Koturn.Zopfli
         /// <returns>Size of zlib footer (always 4 bytes).</returns>
         internal static int WriteZLibFooter(Stream s, uint adler)
         {
-            // Adler32 (Little Endian)
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+            ReadOnlySpan<byte> zlibFooter =
+            [
+                // Adler32 (Big Endian)
+                (byte)(adler >> 24),
+                (byte)(adler >> 16),
+                (byte)(adler >> 8),
+                (byte)adler,
+            ];
+            s.Write(zlibFooter);
+#else
+            // Adler32 (Big Endian)
             s.WriteByte((byte)(adler >> 24));
             s.WriteByte((byte)(adler >> 16));
             s.WriteByte((byte)(adler >> 8));
             s.WriteByte((byte)adler);
+#endif  // NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 
             return sizeof(uint);
         }
@@ -972,17 +995,34 @@ namespace Koturn.Zopfli
         /// <returns>Size of gzip header (always 8 bytes).</returns>
         internal static int WriteGZipFooter(Stream s, uint crc, uint inflatedSize)
         {
-            // CRC-32 (Big Endian)
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+            ReadOnlySpan<byte> gzipFooter =
+            [
+                // CRC-32 (Little Endian)
+                (byte)crc,
+                (byte)(crc >> 8),
+                (byte)(crc >> 16),
+                (byte)(crc >> 24),
+                // ISIZE (Little Endian)
+                (byte)inflatedSize,
+                (byte)(inflatedSize >> 8),
+                (byte)(inflatedSize >> 16),
+                (byte)(inflatedSize >> 24)
+            ];
+            s.Write(gzipFooter);
+#else
+            // CRC-32 (Little Endian)
             s.WriteByte((byte)crc);
             s.WriteByte((byte)(crc >> 8));
             s.WriteByte((byte)(crc >> 16));
             s.WriteByte((byte)(crc >> 24));
 
-            // ISIZE (Big Endian)
+            // ISIZE (Little Endian)
             s.WriteByte((byte)inflatedSize);
             s.WriteByte((byte)(inflatedSize >> 8));
             s.WriteByte((byte)(inflatedSize >> 16));
             s.WriteByte((byte)(inflatedSize >> 24));
+#endif  // NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 
             return sizeof(uint) * 2;
         }
