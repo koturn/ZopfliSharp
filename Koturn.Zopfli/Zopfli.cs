@@ -127,7 +127,7 @@ namespace Koturn.Zopfli
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, ZopfliFormat format = ZopfliFormat.GZip)
         {
-            return Compress(data, 0, data.Length, format);
+            return Compress(data, 0, data.Length, ZopfliOptions.GetDefault(), format);
         }
 
 
@@ -154,7 +154,7 @@ namespace Koturn.Zopfli
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] Compress(byte[] data, in ZopfliOptions options)
         {
-            return Compress(data, 0, data.Length, options);
+            return Compress(data, 0, data.Length, options, ZopfliFormat.GZip);
         }
 
 
@@ -243,7 +243,7 @@ namespace Koturn.Zopfli
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
         public static SafeBuffer CompressUnmanaged(byte[] data, ZopfliFormat format = ZopfliFormat.GZip)
         {
-            return CompressUnmanaged(data, 0, data.Length, format);
+            return CompressUnmanaged(data, 0, data.Length, ZopfliOptions.GetDefault(), format);
         }
 
 
@@ -269,7 +269,7 @@ namespace Koturn.Zopfli
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
         public static SafeBuffer CompressUnmanaged(byte[] data, in ZopfliOptions options)
         {
-            return CompressUnmanaged(data, 0, data.Length, options);
+            return CompressUnmanaged(data, 0, data.Length, options, ZopfliFormat.GZip);
         }
 
 
@@ -384,7 +384,7 @@ namespace Koturn.Zopfli
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] CompressEx(byte[] data, ZopfliFormat format = ZopfliFormat.GZip, BlockType blockType = BlockType.Dynamic, int masterBlockSize = DefaultMasterBlockSize)
         {
-            return CompressEx(data, 0, data.Length, format, blockType, masterBlockSize);
+            return CompressEx(data, 0, data.Length, ZopfliOptions.GetDefault(), format, blockType, masterBlockSize);
         }
 
 
@@ -414,7 +414,7 @@ namespace Koturn.Zopfli
         /// <returns>Compressed data of <paramref name="data"/>.</returns>
         public static byte[] CompressEx(byte[] data, in ZopfliOptions options, BlockType blockType = BlockType.Dynamic, int masterBlockSize = DefaultMasterBlockSize)
         {
-            return CompressEx(data, 0, data.Length, options, blockType, masterBlockSize);
+            return CompressEx(data, 0, data.Length, options, ZopfliFormat.GZip, blockType, masterBlockSize);
         }
 
 
@@ -515,7 +515,7 @@ namespace Koturn.Zopfli
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
         public static SafeBuffer CompressUnmanagedEx(byte[] data, ZopfliFormat format = ZopfliFormat.GZip, BlockType blockType = BlockType.Dynamic, int masterBlockSize = DefaultMasterBlockSize)
         {
-            return CompressUnmanagedEx(data, 0, data.Length, format, blockType, masterBlockSize);
+            return CompressUnmanagedEx(data, 0, data.Length, ZopfliOptions.GetDefault(), format, blockType, masterBlockSize);
         }
 
 
@@ -545,7 +545,7 @@ namespace Koturn.Zopfli
         /// <returns><see cref="SafeBuffer"/> of compressed data of <paramref name="data"/>.</returns>
         public static SafeBuffer CompressUnmanagedEx(byte[] data, in ZopfliOptions options, BlockType blockType = BlockType.Dynamic, int masterBlockSize = DefaultMasterBlockSize)
         {
-            return CompressUnmanagedEx(data, 0, data.Length, options, blockType, masterBlockSize);
+            return CompressUnmanagedEx(data, 0, data.Length, options, ZopfliFormat.GZip, blockType, masterBlockSize);
         }
 
 
