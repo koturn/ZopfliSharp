@@ -137,6 +137,19 @@ namespace Koturn.Zopfli
         /// by using the specified stream, options and binary format.
         /// </summary>
         /// <param name="stream">Destination stream</param>
+        /// <param name="format">Output binary format.</param>
+        /// <param name="leaveOpen">true to leave the stream object open after disposing
+        /// the <see cref="ZopfliStream"/> object; otherwise, false.</param>
+        public ZopfliStream(Stream stream, ZopfliFormat format, bool leaveOpen = false)
+            : this(stream, ZopfliOptions.GetDefault(), format, DefaultCacheSize, false, leaveOpen)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ZopfliStream"/> class
+        /// by using the specified stream, options and binary format.
+        /// </summary>
+        /// <param name="stream">Destination stream</param>
         /// <param name="options">Options for Zopfli compression.</param>
         /// <param name="format">Output binary format.</param>
         /// <param name="leaveOpen">true to leave the stream object open after disposing

@@ -83,7 +83,7 @@ namespace Koturn.Zopfli.Tests
             var sw = Stopwatch.StartNew();
             using (var oms = new MemoryStream())
             {
-                using (var zs = new ZopfliStream(oms, ZopfliOptions.GetDefault(), ZopfliFormat.GZip))
+                using (var zs = new ZopfliStream(oms, ZopfliFormat.GZip))
                 using (var ims = new MemoryStream(data))
                 {
                     ims.CopyTo(zs);
@@ -145,7 +145,7 @@ namespace Koturn.Zopfli.Tests
             var sw = Stopwatch.StartNew();
             using (var oms = new MemoryStream())
             {
-                using (var zs = new ZopfliStream(oms, ZopfliOptions.GetDefault(), ZopfliFormat.ZLib))
+                using (var zs = new ZopfliStream(oms, ZopfliFormat.ZLib))
                 using (var ims = new MemoryStream(data))
                 {
                     ims.CopyTo(zs);
@@ -207,7 +207,7 @@ namespace Koturn.Zopfli.Tests
             var sw = Stopwatch.StartNew();
             using (var oms = new MemoryStream())
             {
-                using (var zs = new ZopfliStream(oms, ZopfliOptions.GetDefault(), ZopfliFormat.Deflate))
+                using (var zs = new ZopfliStream(oms, ZopfliFormat.Deflate))
                 using (var ims = new MemoryStream(data))
                 {
                     ims.CopyTo(zs);
