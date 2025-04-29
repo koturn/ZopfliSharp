@@ -3,6 +3,9 @@
 #endif  // NET7_0_OR_GREATER
 using System;
 using System.IO;
+#if NET7_0_OR_GREATER
+using System.Numerics;
+#endif  // NET7_0_OR_GREATER
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Security;
@@ -993,10 +996,14 @@ namespace Koturn.Zopfli
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private static uint RoundUpToPowerOf2(int n)
         {
+#if NET7_0_OR_GREATER
+            return BitOperations.RoundUpToPowerOf2((uint)n);
+#else
             return RoundUpToPowerOf2((uint)n);
+#endif  // NET7_0_OR_GREATER
         }
 
-
+#if !NET7_0_OR_GREATER
         /// <summary>
         /// Round up to the next highest power of 2.
         /// </summary>
@@ -1014,7 +1021,7 @@ namespace Koturn.Zopfli
             n |= n >> 16;
             return n + 1;
         }
-
+#endif  // !NET7_0_OR_GREATER
 
         /// <summary>
         /// Calculate checksum according to specified format.
