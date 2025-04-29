@@ -12,7 +12,7 @@ namespace Koturn.Zopfli.Tests
     public class ZopfliPngTest : IAssemblyFixture<UnitTestAssemblyFixture>
     {
         /// <summary>
-        /// Test for <see cref="ZopfliPng.OptimizePng(byte[], bool)"/>
+        /// Test for <see cref="ZopfliPng.OptimizePng(byte[])"/>
         /// </summary>
         [Fact]
         public void OptimizeTest01()
@@ -27,7 +27,7 @@ namespace Koturn.Zopfli.Tests
         }
 
         /// <summary>
-        /// Test for <see cref="ZopfliPng.OptimizePng(byte[], ZopfliPngOptions, bool)"/>
+        /// Test for <see cref="ZopfliPng.OptimizePng(byte[], ZopfliPngOptions)"/>
         /// </summary>
         [Fact]
         public void OptimizeTest02()
@@ -43,7 +43,7 @@ namespace Koturn.Zopfli.Tests
         }
 
         /// <summary>
-        /// Test for <see cref="ZopfliPng.OptimizePngUnmanaged(byte[], bool)"/>
+        /// Test for <see cref="ZopfliPng.OptimizePngUnmanaged(byte[])"/>
         /// </summary>
         [Fact]
         public void OptimizeUnmanagedTest01()
@@ -58,7 +58,7 @@ namespace Koturn.Zopfli.Tests
         }
 
         /// <summary>
-        /// Test for <see cref="ZopfliPng.OptimizePngUnmanaged(byte[], bool)"/>
+        /// Test for <see cref="ZopfliPng.OptimizePngUnmanaged(byte[])"/>
         /// </summary>
         [Fact]
         public void OptimizeWithStreamTest()

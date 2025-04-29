@@ -2,6 +2,7 @@
 #    define SUPPORT_LIBRARY_IMPORT
 #endif  // NET7_0_OR_GREATER
 using System;
+using System.ComponentModel;
 using System.Runtime.InteropServices;
 using System.Security;
 using Koturn.Zopfli.Exceptions;
@@ -77,13 +78,38 @@ namespace Koturn.Zopfli
         /// Re-compress deflated data in PNG with Zopfli algorithm.
         /// </summary>
         /// <param name="pngData">Source PNG binary.</param>
+        /// <returns>Result PNG binary.</returns>
+        public static byte[] OptimizePng(byte[] pngData)
+        {
+            return OptimizePng(pngData, 0, pngData.Length, false);
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(byte[] pngData, bool verbose = false)
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static byte[] OptimizePng(byte[] pngData, bool verbose)
         {
             return OptimizePng(pngData, 0, pngData.Length, verbose);
         }
 
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
+        /// <returns>Result PNG binary.</returns>
+        public static byte[] OptimizePng(byte[] pngData, int offset, int count)
+        {
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
+            {
+                return OptimizePng(pngData, offset, count, cPngOptions, false);
+            }
+        }
 
         /// <summary>
         /// Re-compress deflated data in PNG with Zopfli algorithm.
@@ -93,7 +119,8 @@ namespace Koturn.Zopfli
         /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(byte[] pngData, int offset, int count, bool verbose = false)
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static byte[] OptimizePng(byte[] pngData, int offset, int count, bool verbose)
         {
             using (var cPngOptions = CZopfliPngOptions.GetDefault())
             {
@@ -101,6 +128,16 @@ namespace Koturn.Zopfli
             }
         }
 
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <returns>Result PNG binary.</returns>
+        public static byte[] OptimizePng(byte[] pngData, ZopfliPngOptions pngOptions)
+        {
+            return OptimizePng(pngData, 0, pngData.Length, pngOptions, false);
+        }
 
         /// <summary>
         /// Re-compress deflated data in PNG with Zopfli algorithm.
@@ -109,11 +146,24 @@ namespace Koturn.Zopfli
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(byte[] pngData, ZopfliPngOptions pngOptions, bool verbose = false)
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static byte[] OptimizePng(byte[] pngData, ZopfliPngOptions pngOptions, bool verbose)
         {
             return OptimizePng(pngData, 0, pngData.Length, pngOptions, verbose);
         }
 
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <returns>Result PNG binary.</returns>
+        public static byte[] OptimizePng(byte[] pngData, int offset, int count, ZopfliPngOptions pngOptions)
+        {
+            return OptimizePng(pngData, offset, count, pngOptions, false);
+        }
 
         /// <summary>
         /// Re-compress deflated data in PNG with Zopfli algorithm.
@@ -124,7 +174,8 @@ namespace Koturn.Zopfli
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(byte[] pngData, int offset, int count, ZopfliPngOptions pngOptions, bool verbose = false)
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static byte[] OptimizePng(byte[] pngData, int offset, int count, ZopfliPngOptions pngOptions, bool verbose)
         {
             using (var cPngOptions = new CZopfliPngOptions(pngOptions))
             {
@@ -132,6 +183,18 @@ namespace Koturn.Zopfli
             }
         }
 
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <returns>Result PNG binary.</returns>
+        public static byte[] OptimizePng(ReadOnlySpan<byte> pngData)
+        {
+            using (var cPngOptions =  CZopfliPngOptions.GetDefault())
+            {
+                return OptimizePng(pngData, cPngOptions, false);
+            }
+        }
 
         /// <summary>
         /// Re-compress deflated data in PNG with Zopfli algorithm.
@@ -139,7 +202,8 @@ namespace Koturn.Zopfli
         /// <param name="pngData">Source PNG binary.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(ReadOnlySpan<byte> pngData, bool verbose = false)
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static byte[] OptimizePng(ReadOnlySpan<byte> pngData, bool verbose)
         {
             using (var cPngOptions =  CZopfliPngOptions.GetDefault())
             {
@@ -147,6 +211,19 @@ namespace Koturn.Zopfli
             }
         }
 
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <returns>Result PNG binary.</returns>
+        public static byte[] OptimizePng(ReadOnlySpan<byte> pngData, ZopfliPngOptions pngOptions)
+        {
+            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
+            {
+                return OptimizePng(pngData, cPngOptions, false);
+            }
+        }
 
         /// <summary>
         /// Re-compress deflated data in PNG with Zopfli algorithm.
@@ -155,11 +232,182 @@ namespace Koturn.Zopfli
         /// <param name="pngOptions">Options for ZopfliPNG.</param>
         /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
         /// <returns>Result PNG binary.</returns>
-        public static byte[] OptimizePng(ReadOnlySpan<byte> pngData, ZopfliPngOptions pngOptions, bool verbose = false)
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static byte[] OptimizePng(ReadOnlySpan<byte> pngData, ZopfliPngOptions pngOptions, bool verbose)
         {
             using (var cPngOptions = new CZopfliPngOptions(pngOptions))
             {
                 return OptimizePng(pngData, cPngOptions, verbose);
+            }
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData)
+        {
+            return OptimizePngUnmanaged(pngData, 0, pngData.Length, false);
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, bool verbose)
+        {
+            return OptimizePngUnmanaged(pngData, 0, pngData.Length, verbose);
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count)
+        {
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
+            {
+                return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, false);
+            }
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, bool verbose)
+        {
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
+            {
+                return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, verbose);
+            }
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, ZopfliPngOptions pngOptions)
+        {
+            return OptimizePngUnmanaged(pngData, 0, pngData.Length, pngOptions, false);
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, ZopfliPngOptions pngOptions, bool verbose)
+        {
+            return OptimizePngUnmanaged(pngData, 0, pngData.Length, pngOptions, verbose);
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, ZopfliPngOptions pngOptions)
+        {
+            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
+            {
+                return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, false);
+            }
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
+        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, ZopfliPngOptions pngOptions, bool verbose)
+        {
+            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
+            {
+                return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, verbose);
+            }
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData)
+        {
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
+            {
+                return OptimizePngUnmanaged(pngData, cPngOptions, false);
+            }
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, bool verbose)
+        {
+            using (var cPngOptions = CZopfliPngOptions.GetDefault())
+            {
+                return OptimizePngUnmanaged(pngData, cPngOptions, verbose);
+            }
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        public static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, ZopfliPngOptions pngOptions)
+        {
+            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
+            {
+                return OptimizePngUnmanaged(pngData, cPngOptions, false);
+            }
+        }
+
+        /// <summary>
+        /// Re-compress deflated data in PNG with Zopfli algorithm.
+        /// </summary>
+        /// <param name="pngData">Source PNG binary.</param>
+        /// <param name="pngOptions">Options for ZopfliPNG.</param>
+        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
+        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
+        [EditorBrowsable(EditorBrowsableState.Advanced)]
+        public static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, ZopfliPngOptions pngOptions, bool verbose)
+        {
+            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
+            {
+                return OptimizePngUnmanaged(pngData, cPngOptions, verbose);
             }
         }
 
@@ -184,7 +432,6 @@ namespace Koturn.Zopfli
             }
         }
 
-
         /// <summary>
         /// Re-compress deflated data in PNG with Zopfli algorithm.
         /// </summary>
@@ -202,98 +449,6 @@ namespace Koturn.Zopfli
                 return resultPng;
             }
         }
-
-
-        /// <summary>
-        /// Re-compress deflated data in PNG with Zopfli algorithm.
-        /// </summary>
-        /// <param name="pngData">Source PNG binary.</param>
-        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
-        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
-        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, bool verbose = false)
-        {
-            return OptimizePngUnmanaged(pngData, 0, pngData.Length, verbose);
-        }
-
-
-        /// <summary>
-        /// Re-compress deflated data in PNG with Zopfli algorithm.
-        /// </summary>
-        /// <param name="pngData">Source PNG binary.</param>
-        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
-        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
-        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
-        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
-        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, bool verbose = false)
-        {
-            using (var cPngOptions = CZopfliPngOptions.GetDefault())
-            {
-                return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, verbose);
-            }
-        }
-
-
-        /// <summary>
-        /// Re-compress deflated data in PNG with Zopfli algorithm.
-        /// </summary>
-        /// <param name="pngData">Source PNG binary.</param>
-        /// <param name="pngOptions">Options for ZopfliPNG.</param>
-        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
-        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
-        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, ZopfliPngOptions pngOptions, bool verbose = false)
-        {
-            return OptimizePngUnmanaged(pngData, 0, pngData.Length, pngOptions, verbose);
-        }
-
-
-        /// <summary>
-        /// Re-compress deflated data in PNG with Zopfli algorithm.
-        /// </summary>
-        /// <param name="pngData">Source PNG binary.</param>
-        /// <param name="offset">Byte offset of <paramref name="pngData"/>.</param>
-        /// <param name="count">Byte length of <paramref name="pngData"/>.</param>
-        /// <param name="pngOptions">Options for ZopfliPNG.</param>
-        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
-        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
-        public static SafeBuffer OptimizePngUnmanaged(byte[] pngData, int offset, int count, ZopfliPngOptions pngOptions, bool verbose = false)
-        {
-            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
-            {
-                return OptimizePngUnmanaged(pngData, offset, count, cPngOptions, verbose);
-            }
-        }
-
-
-        /// <summary>
-        /// Re-compress deflated data in PNG with Zopfli algorithm.
-        /// </summary>
-        /// <param name="pngData">Source PNG binary.</param>
-        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
-        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
-        public static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, bool verbose = false)
-        {
-            using (var cPngOptions = CZopfliPngOptions.GetDefault())
-            {
-                return OptimizePngUnmanaged(pngData, cPngOptions, verbose);
-            }
-        }
-
-
-        /// <summary>
-        /// Re-compress deflated data in PNG with Zopfli algorithm.
-        /// </summary>
-        /// <param name="pngData">Source PNG binary.</param>
-        /// <param name="pngOptions">Options for ZopfliPNG.</param>
-        /// <param name="verbose">Output verbose message to stdout using printf() or not from zopflipng.dll.</param>
-        /// <returns><see cref="SafeBuffer"/> of result PNG binary.</returns>
-        public static SafeBuffer OptimizePngUnmanaged(ReadOnlySpan<byte> pngData, ZopfliPngOptions pngOptions, bool verbose = false)
-        {
-            using (var cPngOptions = new CZopfliPngOptions(pngOptions))
-            {
-                return OptimizePngUnmanaged(pngData, cPngOptions, verbose);
-            }
-        }
-
 
         /// <summary>
         /// Re-compress deflated data in PNG with Zopfli algorithm.
@@ -331,7 +486,6 @@ namespace Koturn.Zopfli
 
             return resultPngHandle;
         }
-
 
         /// <summary>
         /// Re-compress deflated data in PNG with Zopfli algorithm.
