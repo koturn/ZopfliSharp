@@ -325,11 +325,9 @@ namespace Koturn.Zopfli
                 }
             }
 
+            ZopfliPngException.ThrowIfError(error);
+
             resultPngHandle.Initialize((ulong)resultPngSize);
-            if (error != 0)
-            {
-                throw new ZopfliPngException(error);
-            }
 
             return resultPngHandle;
         }
@@ -363,11 +361,9 @@ namespace Koturn.Zopfli
                 }
             }
 
+            ZopfliPngException.ThrowIfError(error);
+
             resultPngHandle.Initialize((ulong)resultPngSize);
-            if (error != 0)
-            {
-                throw new ZopfliPngException(error);
-            }
 
             return resultPngHandle;
         }

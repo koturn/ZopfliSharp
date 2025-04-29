@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Runtime.Serialization;
 
 
@@ -74,6 +75,80 @@ namespace Koturn.Zopfli.Exceptions
         protected ZopfliPngException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
+        }
+
+
+        /// <summary>
+        /// Throws <see cref="ZopfliPngException"/>.
+        /// </summary>
+        /// <exception cref="ZopfliPngException">Always thrown.</exception>
+        [DoesNotReturn]
+        public static void Throw()
+        {
+            throw new ZopfliPngException();
+        }
+
+        /// <summary>
+        /// Throws <see cref="ZopfliPngException"/>.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        /// <exception cref="ZopfliPngException">Always thrown.</exception>
+        [DoesNotReturn]
+        public static void Throw(string message)
+        {
+            throw new ZopfliPngException(message);
+        }
+
+        /// <summary>
+        /// Throws <see cref="ZopfliPngException"/>.
+        /// </summary>
+        /// <param name="message">The error message that explains the reason for the exception.</param>
+        /// <param name="inner">The exception that is the cause of the current exception.
+        /// If the innerException parameter is not a null reference,
+        /// the current exception is raised in a catch block that handles the inner exception.</param>
+        /// <exception cref="ZopfliPngException">Always thrown.</exception>
+        [DoesNotReturn]
+        public static void Throw(string message, Exception inner)
+        {
+            throw new ZopfliPngException(message, inner);
+        }
+
+        /// <summary>
+        /// Throws <see cref="ZopfliPngException"/>.
+        /// </summary>
+        /// <param name="errorCode">The error code from zopflipng.dll.</param>
+        /// <exception cref="ZopfliPngException">Always thrown.</exception>
+        [DoesNotReturn]
+        public static void Throw(int errorCode)
+        {
+            throw new ZopfliPngException(errorCode);
+        }
+
+        /// <summary>
+        /// Throws <see cref="ZopfliPngException"/>.
+        /// </summary>
+        /// <param name="errorCode">The error code from zopflipng.dll.</param>
+        /// <param name="inner">The exception that is the cause of the current exception.
+        /// If the innerException parameter is not a null reference,
+        /// the current exception is raised in a catch block that handles the inner exception.</param>
+        /// <exception cref="ZopfliPngException">Always thrown.</exception>
+        [DoesNotReturn]
+        public static void Throw(int errorCode, Exception inner)
+        {
+            throw new ZopfliPngException(errorCode, inner);
+        }
+
+        /// <summary>
+        /// Throws <see cref="ZopfliPngException"/> if <paramref name="errorCode"/> is not zero.
+        /// </summary>
+        /// <param name="errorCode">The error code from zopflipng.dll.</param>
+        /// <exception cref="ZopfliPngException">Always thrown.</exception>
+        public static void ThrowIfError(int errorCode)
+        {
+            if (errorCode != 0)
+            {
+                Throw(errorCode);
+            }
         }
 
 
