@@ -23,8 +23,23 @@ namespace Koturn.Zopfli.Internal
     ///   <item><seealso cref="ZopfliPng.SafeNativeMethods.CZopfliPngOptimize(IntPtr, UIntPtr, in CZopfliPngOptions, bool, out MallocedMemoryHandle, out UIntPtr)"/></item>
     /// </list>
     /// </remarks>
+    /// <remarks>
+    /// Primary ctor: Create option instance for zopflipng with default parameters.
+    /// </remarks>
+    /// <param name="lossyTransparent">Allow altering hidden colors of fully transparent pixels.</param>
+    /// <param name="lossy8bit">Convert 16-bit per channel images to 8-bit per channel.</param>
+    /// <param name="autoFilterStrategy">Automatically choose filter strategy using less good compression.</param>
+    /// <param name="useZopfli">Use Zopfli deflate compression.</param>
+    /// <param name="numIterations">Zopfli number of iterations.</param>
+    /// <param name="numIterationsLarge">Zopfli number of iterations on large images.</param>
     [StructLayout(LayoutKind.Sequential)]
-    internal struct CZopfliPngOptions : IDisposable
+    internal struct CZopfliPngOptions(
+        bool lossyTransparent = CZopfliPngOptions.DefaultLossyTransparent,
+        bool lossy8bit = CZopfliPngOptions.DefaultLossy8bit,
+        bool autoFilterStrategy = CZopfliPngOptions.DefaultAutoFilterStrategy,
+        bool useZopfli = CZopfliPngOptions.DefaultUseZopfli,
+        int numIterations = CZopfliPngOptions.DefaultNumIterations,
+        int numIterationsLarge = CZopfliPngOptions.DefaultNumIterationsLarge) : IDisposable
     {
         /// <summary>
         /// Default value for <see cref="LossyTransparent"/>.
@@ -64,10 +79,10 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Actual value of <see cref="LossyTransparent"/>.
         /// </summary>
-        private int _lossyTransparent;
+        private int _lossyTransparent = lossyTransparent ? 1 : 0;
 #else
         [field: MarshalAs(UnmanagedType.Bool)]
-        public bool LossyTransparent { get; set; }
+        public bool LossyTransparent { get; set; } = lossyTransparent;
 #endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// Convert 16-bit per channel images to 8-bit per channel.
@@ -81,19 +96,19 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Actual value of <see cref="Lossy8bit"/>.
         /// </summary>
-        private int _lossy8bit;
+        private int _lossy8bit = lossy8bit ? 1 : 0;
 #else
         [field: MarshalAs(UnmanagedType.Bool)]
-        public bool Lossy8bit { get; set; }
+        public bool Lossy8bit { get; set; } = lossy8bit;
 #endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// Filter strategies to try.
         /// </summary>
-        public IntPtr FilterStrategiesPointer { get; private set; }
+        public IntPtr FilterStrategiesPointer { get; private set; } = IntPtr.Zero;
         /// <summary>
         /// How many strategies to try.
         /// </summary>
-        public int NumFilterStrategies { get; private set; }
+        public int NumFilterStrategies { get; private set; } = 0;
         /// <summary>
         /// Automatically choose filter strategy using less good compression.
         /// </summary>
@@ -106,20 +121,20 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Actual value of <see cref="AutoFilterStrategy"/>.
         /// </summary>
-        private int _autoFilterStrategy;
+        private int _autoFilterStrategy = autoFilterStrategy ? 1 : 0;
 #else
         [field: MarshalAs(UnmanagedType.Bool)]
-        public bool AutoFilterStrategy { get; set; }
+        public bool AutoFilterStrategy { get; set; } = autoFilterStrategy;
 #endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// <para>PNG chunks to keep</para>
         /// <para>chunks to literally copy over from the original PNG to the resulting one.</para>
         /// </summary>
-        public IntPtr KeepChunksPointer { get; private set; }
+        public IntPtr KeepChunksPointer { get; private set; } = IntPtr.Zero;
         /// <summary>
         /// How many entries in keepchunks.
         /// </summary>
-        public int NumKeepChunks { get; private set; }
+        public int NumKeepChunks { get; private set; } = 0;
         /// <summary>
         /// Use Zopfli deflate compression.
         /// </summary>
@@ -132,54 +147,23 @@ namespace Koturn.Zopfli.Internal
         /// <summary>
         /// Actual value of <see cref="UseZopfli"/>.
         /// </summary>
-        private int _useZopfli;
+        private int _useZopfli = useZopfli ? 1 : 0;
 #else
         [field: MarshalAs(UnmanagedType.Bool)]
-        public bool UseZopfli { get; set; }
+        public bool UseZopfli { get; set; } = useZopfli;
 #endif  // RUNTIME_MARSHALLING_DISABLED
         /// <summary>
         /// Zopfli number of iterations.
         /// </summary>
-        public int NumIterations { get; set; }
+        public int NumIterations { get; set; } = numIterations;
         /// <summary>
         /// Zopfli number of iterations on large images.
         /// </summary>
-        public int NumIterationsLarge { get; set; }
+        public int NumIterationsLarge { get; set; } = numIterationsLarge;
         /// <summary>
         /// Unused, left for backwards compatiblity.
         /// </summary>
-        private readonly int _blockSplitStrategy;
-
-
-        /// <summary>
-        /// Create option instance for zopflipng with default parameters.
-        /// </summary>
-        /// <param name="lossyTransparent">Allow altering hidden colors of fully transparent pixels.</param>
-        /// <param name="lossy8bit">Convert 16-bit per channel images to 8-bit per channel.</param>
-        /// <param name="autoFilterStrategy">Automatically choose filter strategy using less good compression.</param>
-        /// <param name="useZopfli">Use Zopfli deflate compression.</param>
-        /// <param name="numIterations">Zopfli number of iterations.</param>
-        /// <param name="numIterationsLarge">Zopfli number of iterations on large images.</param>
-        public CZopfliPngOptions(
-            bool lossyTransparent = DefaultLossyTransparent,
-            bool lossy8bit = DefaultLossy8bit,
-            bool autoFilterStrategy = DefaultAutoFilterStrategy,
-            bool useZopfli = DefaultUseZopfli,
-            int numIterations = DefaultNumIterations,
-            int numIterationsLarge = DefaultNumIterationsLarge)
-        {
-            LossyTransparent = lossyTransparent;
-            Lossy8bit = lossy8bit;
-            FilterStrategiesPointer = IntPtr.Zero;
-            NumFilterStrategies = 0;
-            AutoFilterStrategy = autoFilterStrategy;
-            KeepChunksPointer = IntPtr.Zero;
-            NumKeepChunks = 0;
-            UseZopfli = useZopfli;
-            NumIterations = numIterations;
-            NumIterationsLarge = numIterationsLarge;
-            _blockSplitStrategy = 0;
-        }
+        private readonly int _blockSplitStrategy = 0;
 
 
         /// <summary>
