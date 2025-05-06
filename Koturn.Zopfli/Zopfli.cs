@@ -2,6 +2,9 @@
 #    define SUPPORT_LIBRARY_IMPORT
 #endif  // NET7_0_OR_GREATER
 using System;
+#if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
+using System.Buffers.Binary;
+#endif  // NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
 using System.IO;
 #if NET7_0_OR_GREATER
 using System.Numerics;
@@ -965,14 +968,9 @@ namespace Koturn.Zopfli
         internal static int WriteZLibFooter(Stream s, uint adler)
         {
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
-            ReadOnlySpan<byte> zlibFooter =
-            [
-                // Adler32 (Big Endian)
-                (byte)(adler >> 24),
-                (byte)(adler >> 16),
-                (byte)(adler >> 8),
-                (byte)adler,
-            ];
+            // Adler32 (Big Endian)
+            Span<byte> zlibFooter = stackalloc byte[sizeof(uint)];
+            BinaryPrimitives.WriteUInt32BigEndian(zlibFooter, adler);
             s.Write(zlibFooter);
 #else
             // Adler32 (Big Endian)
@@ -996,19 +994,11 @@ namespace Koturn.Zopfli
         internal static int WriteGZipFooter(Stream s, uint crc, uint inflatedSize)
         {
 #if NETSTANDARD2_1_OR_GREATER || NETCOREAPP2_1_OR_GREATER
-            ReadOnlySpan<byte> gzipFooter =
-            [
-                // CRC-32 (Little Endian)
-                (byte)crc,
-                (byte)(crc >> 8),
-                (byte)(crc >> 16),
-                (byte)(crc >> 24),
-                // ISIZE (Little Endian)
-                (byte)inflatedSize,
-                (byte)(inflatedSize >> 8),
-                (byte)(inflatedSize >> 16),
-                (byte)(inflatedSize >> 24)
-            ];
+            Span<byte> gzipFooter = stackalloc byte[sizeof(uint) * 2];
+            // CRC-32 (Little Endian)
+            BinaryPrimitives.WriteUInt32LittleEndian(gzipFooter, crc);
+            // ISIZE (Little Endian)
+            BinaryPrimitives.WriteUInt32LittleEndian(gzipFooter.Slice(sizeof(uint)), inflatedSize);
             s.Write(gzipFooter);
 #else
             // CRC-32 (Little Endian)
